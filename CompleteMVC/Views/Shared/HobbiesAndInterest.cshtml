@@ -1,0 +1,144 @@
+@using CompleteMVC.ViewModel
+@model HobbiesAndInterestsVM
+
+@section TitleSection{
+    HobbiesAndInterestSection
+}
+@section HeaderSection{
+    <style>
+        table {
+            border: 1px solid Black;
+        }
+
+        tr {
+            border: 1px solid Black;
+        }
+
+        td {
+            border: 1px solid Black;
+        }
+
+        th {
+            border: 1px solid Black;
+        }
+
+        .error {
+            color: darkred;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+
+            if ($('#FoodCanCook').val() == 1) {
+                $('#trCookingItems').show();
+            }
+            else {
+                $('#trCookingItems').hide();
+            }
+        });
+
+        function EnableCookingItemRow(FoodCanCook, trCookingItems) {
+            var FoodCanCookId = '#' + FoodCanCook;
+            var trCookingItemsId = '#' + trCookingItems
+            if ($(FoodCanCookId).val() == 1) {
+                $(trCookingItemsId).show();
+            }
+            else {
+                $(trCookingItemsId).hide();
+            }
+        }
+
+        function EnableEggetarian() {
+            var isVegetarianValue = $('#isVegetarian').val();
+
+            if (isVegetarianValue ==1) {
+                $('trCookingItems').show();
+            }
+            else {
+                $('trCookingItems').hide();
+            }
+        }
+    </script>
+}
+@section ContentBody{
+    @using (Html.BeginForm("UserHobbiesAndInterest", "UserRegistration", FormMethod.Post))
+    {
+        <div id="PhysicalDetailsDiv">
+            <table>
+                <tr>
+                    @*<td colspan="2">
+                            @Html.ValidationSummary(true, "", new { @class = "error" })
+                        </td>*@
+                </tr>
+                <tr>
+                    <td>Hobbies:</td>
+                    <td>
+                        @Html.TextAreaFor(m => m.HobbiesName)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Food You Like:
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(m => m.FoodFondOf)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Cooking:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.FoodCanCook, new SelectList(Model.ListYesNo, "Key", "Value", 0), "Select...", new { @onchange = "EnableCookingItemRow('FoodCanCook', 'trCookingItems');" })
+                    </td>
+                </tr>
+                <tr id="trCookingItems">
+                    <td>
+                        Cooking Items:
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(m => m.FoodAbletoCook)
+                    </td>
+                </tr>
+                <tr>
+                    <td>Favorite Books:</td>
+                    <td>@Html.TextAreaFor(m => m.FavoriteBooks)</td>
+                </tr>
+                <tr>
+                    <td>Favorite TV Shows:</td>
+                    <td>@Html.TextAreaFor(m => m.FavoriteTVShow)</td>
+                </tr>
+                <tr>
+                    <td>Food Habbit:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.isVegetarian, new SelectList(Model.ListFoodHabbits, "Key", "Value", 0), "Select...", new { @onchange = "EnableEggetarian();" })
+                    </td>
+                </tr>
+                <tr id="trEggetarian">
+                    <td>Eggetarian:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.isEggetarian, new SelectList(Model.ListYesNo, "Key", "Value", 0), "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>Smoking:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.isSmoke, new SelectList(Model.ListHabbitsType, "Key", "Value", 0), "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>Drinker:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.isDrink, new SelectList(Model.ListHabbitsType, "Key", "Value", 0), "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" colspan="3">
+                        <input type="submit" id="Hobbies" name="Hobbies" value="Save and Next" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+}
+

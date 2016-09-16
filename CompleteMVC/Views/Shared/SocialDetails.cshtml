@@ -1,0 +1,417 @@
+
+@using CompleteMVC.ViewModel
+@model UserSocialDetailsVM
+
+@section TitleSection{
+    UserPhysicalDetails
+}
+@section HeaderSection{
+    <style>
+        table {
+            border: 1px solid Black;
+        }
+
+        tr {
+            border: 1px solid Black;
+        }
+
+        td {
+            border: 1px solid Black;
+        }
+
+        th {
+            border: 1px solid Black;
+        }
+
+        .error {
+            color: darkred;
+        }
+
+        .JobFieldHide {
+            display: none;
+        }
+
+        .JobFieldShow {
+            visibility: visible;
+        }
+    </style>
+    <script>
+
+        function GetStatesList(sourcecontrolname, destcontrolname) {
+            var sourcecontolId = '#' + sourcecontrolname;
+            var destControlId = '#' + destcontrolname;
+            var Id = $(sourcecontolId).val();
+            $.ajax({
+                url: '/UserRegistration/GetStates',
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                data: "{'Id':'" + Id + "'}",
+                success: function (states) {
+                    $(destControlId).html(""); // clear before appending new list
+
+                    var markup = "<option value=''>Select State...</option>";
+                    for (var x = 0; x < states.length; x++) {
+                        markup += "<option value=" + states[x].Value + ">" + states[x].Text + "</option>";
+                    }
+                    $(destControlId).html(markup).show();
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            if ($('#FatherWorkingStatus').val() == 1) {
+                $('#JobFieldFather').show();
+            }
+            else {
+                $('#JobFieldFather').hide();
+            }
+      
+
+            if ($('#FatherWorkingStatus').val() == 1) {
+                $('#JobFieldMother').show();
+            }
+            else {
+                $('#JobFieldMother').hide();
+            }
+        });
+
+        function GetCitiesList(sourcecontrolname, destcontrolname) {
+            var sourcecontolId = '#' + sourcecontrolname;
+            var destControlId = '#' + destcontrolname;
+            var StateId = $(sourcecontolId).val();
+            $.ajax({
+                url: '/UserRegistration/GetCities',
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                data: "{ 'Id':'" + StateId + "'}",
+                success: function (cities) {
+                    $(destControlId).html(""); // clear before appending new list
+
+                    var markup = "<option value=''>Select City...</option>";
+                    for (var x = 0; x < cities.length; x++) {
+
+                        markup += "<option value=" + cities[x].Value + ">" + cities[x].Text + "</option>";
+
+                    }
+                    $(destControlId).html(markup).show();
+                }
+            });
+        }
+
+
+        function GetCasteList() {
+
+            var Id = $('#UserReligionId').val();
+            $.ajax({
+                url: '/UserRegistration/GetCastesList',
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                data: "{'Id':'" + Id + "'}",
+                success: function (castes) {
+                    $("#UserCasteId").html(""); // clear before appending new list
+
+                    var markup = "<option value=''>Select Caste...</option>";
+                    for (var x = 0; x < castes.length; x++) {
+                        markup += "<option value=" + castes[x].Value + ">" + castes[x].Text + "</option>";
+                    }
+                    $("#UserCasteId").html(markup).show();
+                }
+            });
+        }
+        function GetSubCasteList() {
+
+            var Id = $('#UserCasteId').val();
+            $.ajax({
+                url: '/UserRegistration/GetSubCastesList',
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                data: "{'Id':'" + Id + "'}",
+                success: function (subCastes) {
+                    $("#UserSubCasteId").html(""); // clear before appending new list
+
+                    var markup = "<option value=''>Select SubCaste...</option>";
+                    for (var x = 0; x < subCastes.length; x++) {
+                        markup += "<option value=" + subCastes[x].Value + ">" + subCastes[x].Text + "</option>";
+                    }
+                    $("#UserSubCasteId").html(markup).show();
+                }
+            });
+        }
+
+        function GetJobField(sourceControl, controltoShow, tdControl) {
+            var sourceControlId = '#' + sourceControl;
+            var controltoShowId = '#' + controltoShow;
+            var tdControlId = '#' + tdControl;
+            var Id = $(sourceControlId).val();
+
+            //  $(controltoShowId).addClass("JobFieldShow");
+            if (Id == 1) {
+                $(tdControlId).show();
+                $.ajax({
+                    url: '/UserRegistration/GetJobFields',
+                    type: "POST",
+                    dataType: "JSON",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (jobFields) {
+                        $(controltoShowId).html(""); // clear before appending new list
+                        var markup = "<option value=''>Select JobField...</option>";
+                        for (var x = 0; x < jobFields.length; x++) {
+                            markup += "<option value=" + jobFields[x].Value + ">" + jobFields[x].Text + "</option>";
+                        }
+                        $(controltoShowId).html(markup).show();
+                    }
+                });
+
+            }
+            else {
+                $(tdControlId).hide();
+            }
+        }
+    </script>
+}
+@section ContentBody{
+    @using (Html.BeginForm("UserSocialDetails", "UserRegistration"))
+    {
+        <div id="SocialDetailsDiv">
+            <table>
+                <tr>
+                    @*<td colspan="2">
+                            @Html.ValidationSummary(true, "", new { @class = "error" })
+                        </td>*@
+                </tr>
+                <tr>
+                    <td>Religion:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.UserReligionId, new SelectList(Model.listReligion, "Key", "Value", 0), "Select Religion...", new { @onchange = "GetCasteList();" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Caste:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.UserCasteId, new SelectList(ViewBag.CasteList, "Value", "Text"), "Select Caste...", new { @onchange = "GetSubCasteList();" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        SubCaste:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.UserSubCasteId, new SelectList(ViewBag.SubCasteList, "Value", "Text"), "Select SubCaste...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Rashi Name:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.RashiId, new SelectList(Model.listRashi, "Key", "Value", 0), "Select Rashi...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Gotra Name:
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.GotraName)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Country Living In:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.UserLivingCountryId, new SelectList(Model.listLivingCountryId, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('UserLivingCountryId','UserLivingStateId');" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        State Living In:
+                    </td>
+                    <td>
+                        @*@Html.DropDownListFor(m => m.UserJobState, new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "StateName"),
+                            "Select State...", new { @onchange = "GetCitiesList();" })*@
+                        @Html.DropDownListFor(m => m.UserLivingStateId, new SelectList(ViewBag.LivingStateList, "Value", "Text"), "Select State...", new { @onchange = "GetCitiesList('UserLivingStateId', 'UserLivingCityId');" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        City Living In:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.UserLivingCityId, new SelectList(ViewBag.LivingCityList, "Value", "Text"), "Select City...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Zip Code:
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.UserLivingZipCode)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Address:
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(m => m.UserCompleteAddress)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        About You:
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(m => m.AboutYou)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Language Known:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.LanguageKnown, new SelectList(Model.ListLanguages, "Key", "Value", 0), "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Dressing Style:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.DressingStyle, new SelectList(Model.ListDressingStyle, "Key", "Value", 0), "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        About Family:
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(m => m.AboutFamily)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        No Of Brothers(Siblings):
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.NoOfBrothers)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        No Of Sisters(Siblings):
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.NoOfSisters)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        No Of Brothers Married:
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.NoOfBrothersMarried)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        No Of Sisters Married:
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.NoOfSistersMarried)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Family Income (Annual):
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.FamilyIncomeId, new SelectList(Model.listFamilyIncome, "Key", "Value"), "Select Income...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Family Joint ?:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.IsJointFamily, new List<SelectListItem>()
+                         {
+                            new SelectListItem() { Text="No",Value= "false"},
+                            new SelectListItem() { Text = "Yes", Value="true"},
+                       }, "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Family Living In:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.FamilyResidingCountryId, new SelectList(Model.listFamilyResidingCountry, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('FamilyResidingCountryId', 'FamilyResidingStateId');" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        State Living In:
+                    </td>
+                    <td>
+                        @*@Html.DropDownListFor(m => m.UserJobState, new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "StateName"),
+                            "Select State...", new { @onchange = "GetCitiesList();" })*@
+                        @Html.DropDownListFor(m => m.FamilyResidingStateId, new SelectList(ViewBag.FamilyResidingStateList, "Value", "Text"), "Select State...", new { @onchange = "GetCitiesList('FamilyResidingStateId', 'FamilyResidingCityId');" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        City Living In:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.FamilyResidingCityId, new SelectList(ViewBag.FamilyResidingCityList, "Value", "Text"), "Select City...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Father Working:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.FatherWorkingStatus, new SelectList(Model.ListYesNo, "Key", "Value", 0), "Select...", new { @onchange = "GetJobField('FatherWorkingStatus','FatherOccupation', 'JobFieldFather');" })
+                    </td>
+
+                    <td id="JobFieldFather">
+                        @Html.DropDownListFor(m => m.FatherOccupation, new SelectList(ViewBag.JobFieldList, "Value", "Text"), "Select Occupation...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Mother Working:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MotherWorkingStatus, new SelectList(Model.ListYesNo, "Key", "Value", 0), "Select...", new { @onchange = "GetJobField('MotherWorkingStatus','MotherOccupation', 'JobFieldMother');" })
+                    </td>
+
+                    <td id="JobFieldMother">
+                        @Html.DropDownListFor(m => m.MotherOccupation, new SelectList(ViewBag.JobFieldList, "Value", "Text", 1), "Select Occupation...")
+                    </td>
+
+
+                </tr>
+                <tr>
+                    <td>
+                        Profile Managed By:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.ProfileManager, new SelectList(Model.ListProfileManager, "Key", "Value", 0), "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" colspan="3">
+                        <input type="submit" id="SocialDetails" name="SocialDetails" value="Save and Next" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+}
+

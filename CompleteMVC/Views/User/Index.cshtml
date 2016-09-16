@@ -1,0 +1,83 @@
+﻿@using CompleteMVC.ViewModel
+
+@model UserDetails
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<!DOCTYPE html>
+
+    <html>
+
+    <head>
+        <style>
+            table {
+                border: 1px solid Black;
+            }
+
+            tr {
+                border: 1px solid Black;
+            }
+
+            td {
+                border: 1px solid Black;
+            }
+
+            th {
+                border: 1px solid Black;
+            }
+        </style>
+        <meta name="viewport" content="width=device-width" />
+        <title>Index</title>
+    </head>
+    <body>*@
+
+
+@section TitleSection{
+    ProfileView
+}
+@section HeaderSection{
+    <style>
+        table {
+            border: 1px solid Black;
+        }
+
+        tr {
+            border: 1px solid Black;
+        }
+
+        td {
+            border: 1px solid Black;
+        }
+
+        th {
+            border: 1px solid Black;
+        }
+    </style>
+}
+@section ContentBody{
+    @if (Session["User"] != null)
+    {
+        <div>
+            <table>
+                <tr>
+                    <th>User Name</th>
+                    <th>User Email</th>
+                    <th>User Contact</th>
+                </tr>
+                <tr>
+                    <td>@Model.UserName</td>
+                    <td>@Model.UserEmail</td>
+                    <td>@Model.UserContact</td>
+                </tr>
+            </table>
+        </div>
+    }
+    else
+    {
+            <div>
+                Welcome New User!
+            </div>
+    }
+}
