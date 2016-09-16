@@ -28,7 +28,18 @@
     </style>
     <script>
         $(document).ready(function () {
+            debugger;
+            var isVegetarianValue = $('#isVegetarian').val();
 
+            if (isVegetarianValue == 1) {
+                $('#trEggetarian').show();
+            }
+            else {
+                $('#trEggetarian').hide();
+            }
+
+
+            $('#isVegetarian').hide();
             if ($('#FoodCanCook').val() == 1) {
                 $('#trCookingItems').show();
             }
@@ -49,13 +60,14 @@
         }
 
         function EnableEggetarian() {
+            debugger;
             var isVegetarianValue = $('#isVegetarian').val();
 
-            if (isVegetarianValue ==1) {
-                $('trCookingItems').show();
+            if (isVegetarianValue == 1) {
+                $('#trEggetarian').show();
             }
             else {
-                $('trCookingItems').hide();
+                $('#trEggetarian').hide();
             }
         }
     </script>
@@ -85,6 +97,13 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Food Habbit:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.isVegetarian, new SelectList(Model.ListFoodHabbits, "key", "Value", 1), "Select Food Habbits...", new { @onchange = "EnableEggetarian();" })
+                    </td>
+                </tr>
+                <tr>
+
                     <td>
                         Cooking:
                     </td>
@@ -108,12 +127,7 @@
                     <td>Favorite TV Shows:</td>
                     <td>@Html.TextAreaFor(m => m.FavoriteTVShow)</td>
                 </tr>
-                <tr>
-                    <td>Food Habbit:</td>
-                    <td>
-                        @Html.DropDownListFor(m => m.isVegetarian, new SelectList(Model.ListFoodHabbits, "Key", "Value", 0), "Select...", new { @onchange = "EnableEggetarian();" })
-                    </td>
-                </tr>
+
                 <tr id="trEggetarian">
                     <td>Eggetarian:</td>
                     <td>
