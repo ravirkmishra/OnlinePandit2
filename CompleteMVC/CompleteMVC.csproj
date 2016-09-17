@@ -144,6 +144,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BodyColour.cs" />
+    <Compile Include="Models\BodyType.cs" />
     <Compile Include="Models\Caste.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\District.cs" />
@@ -157,6 +158,9 @@
     <Compile Include="Models\IncomeRange.cs" />
     <Compile Include="Models\JobFields.cs" />
     <Compile Include="Models\Language.cs" />
+    <Compile Include="Models\ManglikState.cs" />
+    <Compile Include="Models\MarritalStatus.cs" />
+    <Compile Include="Models\MatchPreferance.cs" />
     <Compile Include="Models\MaxEducationClassNames.cs" />
     <Compile Include="Models\Native.cs" />
     <Compile Include="Models\PanditBookingModel.cs" />
@@ -179,6 +183,7 @@
     <Compile Include="ViewModel\FooterVM.cs" />
     <Compile Include="ViewModel\HobbiesAndInterestsVM.cs" />
     <Compile Include="ViewModel\LogInVM.cs" />
+    <Compile Include="ViewModel\MatchPreferanceVM.cs" />
     <Compile Include="ViewModel\UserDetails.cs" />
     <Compile Include="ViewModel\UserDisplay.cs" />
     <Compile Include="ViewModel\UserEducationDetailsVM.cs" />
@@ -203,6 +208,7 @@
     <Content Include="Views\Shared\EducationDetails.cshtml" />
     <Content Include="Views\Shared\SocialDetails.cshtml" />
     <Content Include="Views\Shared\HobbiesAndInterest.cshtml" />
+    <Content Include="Views\Shared\MatchPreferanceView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

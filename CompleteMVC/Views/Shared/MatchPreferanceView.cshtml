@@ -1,0 +1,388 @@
+﻿
+
+@using CompleteMVC.ViewModel
+@model MatchPreferanceVM
+
+
+@section TitleSection{
+    UserMatchPreferance
+}
+@section HeaderSection{
+    <style>
+        table {
+            border: 1px solid Black;
+        }
+
+        tr {
+            border: 1px solid Black;
+        }
+
+        td {
+            border: 1px solid Black;
+        }
+
+        th {
+            border: 1px solid Black;
+        }
+
+        .error {
+            color: darkred;
+        }
+    </style>
+    <script>
+        function GetStatesList(sourcecontrolname, destcontrolname) {
+            var sourcecontolId = '#' + sourcecontrolname;
+            var destControlId = '#' + destcontrolname;
+            var Id = $(sourcecontolId).val();
+            $.ajax({
+                url: '/UserRegistration/GetStates',
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                data: "{'Id':'" + Id + "'}",
+                success: function (states) {
+                    $(destControlId).html(""); // clear before appending new list
+
+                    var markup = "<option value=''>Select State...</option>";
+                    for (var x = 0; x < states.length; x++) {
+                        markup += "<option value=" + states[x].Value + ">" + states[x].Text + "</option>";
+                    }
+                    $(destControlId).html(markup).show();
+                }
+            });
+        }
+
+        function GetCitiesList(sourcecontrolname, destcontrolname) {
+            var sourcecontolId = '#' + sourcecontrolname;
+            var destControlId = '#' + destcontrolname;
+            var StateId = $(sourcecontolId).val();
+            $.ajax({
+                url: '/UserRegistration/GetCities',
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                data: "{ 'Id':'" + StateId + "'}",
+                success: function (cities) {
+                    $(destControlId).html(""); // clear before appending new list
+
+                    var markup = "<option value=''>Select City...</option>";
+                    for (var x = 0; x < cities.length; x++) {
+
+                        markup += "<option value=" + cities[x].Value + ">" + cities[x].Text + "</option>";
+
+                    }
+                    $(destControlId).html(markup).show();
+                }
+            });
+        }
+
+        function GetEducationField() {
+
+            var Id = $('#MatchEducationClass').val();
+            $.ajax({
+                url: '/UserRegistration/GetEducationFields',
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                data: "{'Id':'" + Id + "'}",
+                success: function (educationFields) {
+                    $("#MatchEducationField").html(""); // clear before appending new list
+
+                    var markup = "<option value=''>Select Education Field...</option>";
+                    for (var x = 0; x < educationFields.length; x++) {
+                        markup += "<option value=" + educationFields[x].Value + ">" + educationFields[x].Text + "</option>";
+                    }
+                    $("#MatchEducationField").html(markup).show();
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            debugger;
+            var isVegetarianValue = $('#MatchFoodHabbit').val();
+
+            if (isVegetarianValue == 1) {
+                $('#trEggetarian').show();
+            }
+            else {
+                $('#trEggetarian').hide();
+            }
+
+        });
+
+        function EnableEggetarian() {
+            debugger;
+            var isVegetarianValue = $('#MatchFoodHabbit').val();
+
+            if (isVegetarianValue == 1) {
+                $('#trEggetarian').show();
+            }
+            else {
+                $('#trEggetarian').hide();
+            }
+        }
+
+        function GetCasteList() {
+
+            var Id = $('#MatchReligion').val();
+            $.ajax({
+                url: '/UserRegistration/GetCastesList',
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                data: "{'Id':'" + Id + "'}",
+                success: function (castes) {
+                    $("#MatchCaste").html(""); // clear before appending new list
+
+                    var markup = "<option value=''>Select Caste...</option>";
+                    for (var x = 0; x < castes.length; x++) {
+                        markup += "<option value=" + castes[x].Value + ">" + castes[x].Text + "</option>";
+                    }
+                    $("#MatchCaste").html(markup).show();
+                }
+            });
+        }
+        function GetSubCasteList() {
+
+            var Id = $('#MatchCaste').val();
+            $.ajax({
+                url: '/UserRegistration/GetSubCastesList',
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                data: "{'Id':'" + Id + "'}",
+                success: function (subCastes) {
+                    $("#MatchSubCaste").html(""); // clear before appending new list
+
+                    var markup = "<option value=''>Select SubCaste...</option>";
+                    for (var x = 0; x < subCastes.length; x++) {
+                        markup += "<option value=" + subCastes[x].Value + ">" + subCastes[x].Text + "</option>";
+                    }
+                    $("#MatchSubCaste").html(markup).show();
+                }
+            });
+        }
+
+    </script>
+}
+@section ContentBody{
+    @using (Html.BeginForm("UserMatchPreferance", "UserRegistration"))
+    {
+        <div id="U">
+            <table>
+                <tr>
+                    @*<td colspan="2">
+                            @Html.ValidationSummary(true, "", new { @class = "error" })
+                        </td>*@
+                </tr>
+                <tr>
+                    <td>Height Fit:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchHeightFitFrom, Enumerable.Range(1, 8).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+                    </td>
+                </tr>
+                <tr>
+                    <td>Height Inch:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchHeightInchFrom, Enumerable.Range(0, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+                    </td>
+                </tr>
+                <tr>
+                    <td>Height Fit:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchHeightFitTo, Enumerable.Range(1, 8).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+                    </td>
+                </tr>
+                <tr>
+                    <td>Height Inch:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchHeightInchTo, Enumerable.Range(0, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Age From:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchAgeRangeFrom, Enumerable.Range(0, 60).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Age To:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchAgeRangeTo, Enumerable.Range(0, 60).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Match Country:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchCountry, new SelectList(Model.listMatchCountry, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('MatchCountry','MatchState');" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        State Living In:
+                    </td>
+                    <td>
+                        @*@Html.DropDownListFor(m => m.UserJobState, new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "StateName"),
+                            "Select State...", new { @onchange = "GetCitiesList();" })*@
+                        @Html.DropDownListFor(m => m.MatchState, new SelectList(ViewBag.LivingStateList, "Value", "Text"), "Select State...", new { @onchange = "GetCitiesList('MatchState', 'MatchCity');" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        City Living In:
+                    </td>
+                    <td>
+                        @*@Html.DropDownListFor(m => m.UserJobState, new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "StateName"),
+                            "Select State...", new { @onchange = "GetCitiesList();" })*@
+                        @Html.DropDownListFor(m => m.MatchCity, new SelectList(ViewBag.LivingCityList, "Value", "Text"), "Select City...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>Match Marrital Status:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchMarritalStatus, new SelectList(Model.listMarritalStatus, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('UserLivingCountryId','UserLivingStateId');" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Match Religion:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchReligion, new SelectList(Model.listMatchReligion, "Key", "Value", 0), "Select Religion...", new { @onchange = "GetCasteList();" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Match Caste:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchCaste, new SelectList(ViewBag.MatchCasteList, "Value", "Text"), "Select Caste...", new { @onchange = "GetSubCasteList();" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sub Caste:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchSubCaste, new SelectList(ViewBag.MatchSubCasteList, "Value", "Text"), "Select SubCaste...")
+                    </td>
+                </tr>
+                <tr>
+                    <td> Gotra Name:</td>
+                    <td>@Html.TextBoxFor(m => m.GotraName)</td>
+                </tr>
+                <tr>
+                    <td>
+                        Rashi Name:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.RashiId, new SelectList(Model.listMatchRashi, "Key", "Value", 0), "Select Rashi...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Language Known:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchLanguage, new SelectList(Model.listMatchLanguage, "Key", "Value", 0), "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>Manlik Status:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchManglikState, new SelectList(Model.listMatchManglikStatus, "Key", "Value", 0), "Select...")
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Maximum Qualification:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchEducationClass, new SelectList(Model.listMatchQualificationClass, "Key", "Value"), "Select Qualification...", new { @onchange = "GetEducationField();" })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Education Field:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchEducationField, new SelectList(ViewBag.EducationField, "Value", "Text"), "Select Education Field...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Job Field:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchJobField, new SelectList(Model.listMatchJobField, "Key", "Value", 1), "Select...")
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Food Habbit:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchFoodHabbit, new SelectList(Model.listMatchFoodHabbits, "key", "Value", 1), "Select Food Habbits...", new { @onchange = "EnableEggetarian();" })
+                    </td>
+                </tr>
+                <tr id="trEggetarian">
+                    <td>Eggetarian:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchIsEggetarian, new SelectList(Model.listYesNo, "Key", "Value", 0), "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>Smoking:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchIsSmoke, new SelectList(Model.listMatchHabbitsType, "Key", "Value", 0), "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>Drinker:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchIsDrink, new SelectList(Model.listMatchHabbitsType, "Key", "Value", 0), "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Skin Colour:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchSkinComplexion, new SelectList(Model.listMatchBodyColour, "Key", "Value"), "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Body Type:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchBodyType, new SelectList(Model.listMatchBodyType, "Key", "Value"), "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Physically Challenged:
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.MatchPD, new SelectList(Model.listYesNo, "Key", "Value"), "Select...")
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        About Your Partner:
+                    </td>
+                    <td>
+                        @Html.TextAreaFor(m => m.MatchAboutPartner)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="left" colspan="3">
+                        <input type="submit" id="MatchPreferance" name="MatchPreferance" value="Save and Next" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+}
+
+
+

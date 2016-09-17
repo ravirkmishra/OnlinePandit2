@@ -100,5 +100,25 @@ namespace CompleteMVC.BAL
         {
             return obj.GetFoodHabbitsDAL();
         }
+
+        public Dictionary<int, string> GetMarritalListBAL()
+        {
+            return obj.GetMarritalListDAL();
+        }
+
+        public Dictionary<int, string> GetManglikStatusListBAL()
+        {
+            return obj.GetManglikStatusListDAL();
+        }
+
+        //public Dictionary<int, string> GetMatchEducationClassBAL()
+        //{
+        //    return obj.GetMatchEducationClassDAL();
+        //}
+
+        public Dictionary<int, string> GetBodyTypeListBAL()
+        {
+            return obj.GetBodyTypeListDAL();
+        }
     }
 }

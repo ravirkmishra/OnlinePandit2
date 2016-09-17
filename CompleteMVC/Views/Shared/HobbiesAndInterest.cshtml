@@ -38,8 +38,6 @@
                 $('#trEggetarian').hide();
             }
 
-
-            $('#isVegetarian').hide();
             if ($('#FoodCanCook').val() == 1) {
                 $('#trCookingItems').show();
             }
@@ -96,12 +94,7 @@
                         @Html.TextAreaFor(m => m.FoodFondOf)
                     </td>
                 </tr>
-                <tr>
-                    <td>Food Habbit:</td>
-                    <td>
-                        @Html.DropDownListFor(m => m.isVegetarian, new SelectList(Model.ListFoodHabbits, "key", "Value", 1), "Select Food Habbits...", new { @onchange = "EnableEggetarian();" })
-                    </td>
-                </tr>
+              
                 <tr>
 
                     <td>
@@ -127,7 +120,12 @@
                     <td>Favorite TV Shows:</td>
                     <td>@Html.TextAreaFor(m => m.FavoriteTVShow)</td>
                 </tr>
-
+                <tr>
+                    <td>Food Habbit:</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.isVegetarian, new SelectList(Model.ListFoodHabbits, "key", "Value", 1), "Select Food Habbits...", new { @onchange = "EnableEggetarian();" })
+                    </td>
+                </tr>
                 <tr id="trEggetarian">
                     <td>Eggetarian:</td>
                     <td>

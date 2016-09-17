@@ -56,6 +56,14 @@ namespace CompleteMVC.DAL
             dbcontext.SaveChanges();
             return true;
         }
+
+        public bool AddMatchPreferanceDAL(MatchPreferance matchobj)
+        {
+            dbcontext.UserMatchPreferances.Add(matchobj);
+            dbcontext.SaveChanges();
+            return true;
+        }
+
         public bool AddUserHabbitsAndHobbiesInterestsDAL(Hobbies hobbiesobj)
         {
             dbcontext.HobbiesAndInterests.Add(hobbiesobj);

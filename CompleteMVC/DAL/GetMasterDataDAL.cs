@@ -95,7 +95,7 @@ namespace CompleteMVC.DAL
             return dict;
         }
 
-       
+
 
         public Dictionary<int, string> GetQualificationClassDAL(int qualificationClassId)
         {
@@ -117,6 +117,9 @@ namespace CompleteMVC.DAL
             }
             return dict;
         }
+
+
+
         public Dictionary<int, string> GetQualificationClassDAL()
         {
             Dictionary<int, string> dict = new Dictionary<int, string>();
@@ -443,5 +446,79 @@ namespace CompleteMVC.DAL
             return dict;
         }
 
+        public Dictionary<int, string> GetMarritalListDAL()
+        {
+            Dictionary<int, string> dict = new Dictionary<int, string>();
+            using (var dbcontext = new UserContext())
+            {
+                //var idParam = new SqlParameter
+                //{
+                //    ParameterName = "jobFieldId",
+                //    Value = jobFieldId
+                //};
+
+                var result = dbcontext.Database.SqlQuery<MarritalStatus>("exec sp_GetMarritalStatus");
+
+                foreach (var item in result)
+                {
+                    dict.Add(item.Id, item.MarritalStatusName);
+                    //if (item.Id == 3)
+                    //{
+                    //    dict.Remove(3);
+                    //}
+                }
+            }
+            return dict;
+        }
+
+        public Dictionary<int, string> GetBodyTypeListDAL()
+        {
+            Dictionary<int, string> dict = new Dictionary<int, string>();
+            using (var dbcontext = new UserContext())
+            {
+                //var idParam = new SqlParameter
+                //{
+                //    ParameterName = "jobFieldId",
+                //    Value = jobFieldId
+                //};
+
+                var result = dbcontext.Database.SqlQuery<BodyType>("exec sp_GetBodyType");
+
+                foreach (var item in result)
+                {
+                    dict.Add(item.Id, item.BodyTypeName);
+                    //if (item.Id == 3)
+                    //{
+                    //    dict.Remove(3);
+                    //}
+                }
+            }
+            return dict;
+        }
+
+        public Dictionary<int, string> GetManglikStatusListDAL()
+        {
+            Dictionary<int, string> dict = new Dictionary<int, string>();
+            using (var dbcontext = new UserContext())
+            {
+                //var idParam = new SqlParameter
+                //{
+                //    ParameterName = "jobFieldId",
+                //    Value = jobFieldId
+                //};
+
+                var result = dbcontext.Database.SqlQuery<ManglikState>("exec sp_GetManlikStatus");
+
+                foreach (var item in result)
+                {
+                    dict.Add(item.Id, item.ManglikStateName);
+                    //if (item.Id == 3)
+                    //{
+                    //    dict.Remove(3);
+                    //}
+                }
+            }
+            return dict;
+        }
     }
 }

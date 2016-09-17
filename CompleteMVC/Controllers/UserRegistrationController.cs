@@ -462,10 +462,10 @@ namespace CompleteMVC.Controllers
                 hobbiesobj.HobbiesName = Request.Form["HobbiesName"];
                 hobbiesobj.FoodFondOf = Request.Form["FoodFondOf"];
                 hobbiesobj.FoodCanCook = Convert.ToInt32(Request.Form["FoodCanCook"]);
-                hobbiesobj.FoodAbletoCook = hobbiesobj.FoodCanCook == 1 ? Request.Form["FoodAbletoCook"]:"";
+                hobbiesobj.FoodAbletoCook = hobbiesobj.FoodCanCook == 1 ? Request.Form["FoodAbletoCook"] : "";
                 hobbiesobj.FavoriteBooks = Request.Form["FavoriteBooks"];
                 hobbiesobj.FavoriteTVShow = Request.Form["FavoriteTVShow"];
-                hobbiesobj.isVegetarian = Convert.ToInt32("isVegetarian");
+                hobbiesobj.isVegetarian = Convert.ToInt32(Request.Form["isVegetarian"]);
                 hobbiesobj.isDrink = Convert.ToInt32(Request.Form["isDrink"]);
                 hobbiesobj.isSmoke = Convert.ToInt32(Request.Form["isSmoke"]);
                 if (hobbiesobj.isVegetarian == 1)
@@ -479,8 +479,82 @@ namespace CompleteMVC.Controllers
 
                 bool status = obj.AddUserHabbitsAndHobbiesInterestsBAL(hobbiesobj);
 
-                return View();
+                MatchPreferanceVM matchobjvm = new MatchPreferanceVM();
+                GetMasterDataBAL masterdataobj = new GetMasterDataBAL();
+                matchobjvm.listMatchCountry = masterdataobj.GetCountryListBAL();
+                matchobjvm.listMatchReligion = masterdataobj.GetReligionListBAL();
+                matchobjvm.listMarritalStatus = masterdataobj.GetMarritalListBAL();
+                matchobjvm.listMatchRashi = masterdataobj.GetRashiListBAL();
+                matchobjvm.listMatchLanguage = masterdataobj.GetAllLangueagesBAL();
+                matchobjvm.listMatchManglikStatus = masterdataobj.GetManglikStatusListBAL();
+                matchobjvm.listMatchQualificationClass = masterdataobj.GetQualificationClassBAL();
+                matchobjvm.listMatchJobField = masterdataobj.GetJobFieldsBAL();
+                matchobjvm.listMatchFoodHabbits = masterdataobj.GetFoodHabbitsBAL();
+                matchobjvm.listYesNo = masterdataobj.GetYesNoValuesBAL();
+                matchobjvm.listMatchHabbitsType = masterdataobj.GetHabbitsTypeBAL();
+                matchobjvm.listMatchBodyColour = getUserdetailsBAL.GetBodyColorOptionsBAL();
+                matchobjvm.listMatchBodyType = masterdataobj.GetBodyTypeListBAL();
+
+                ViewBag.LivingStateList = new List<SelectListItem> { };
+                ViewBag.LivingCityList = new List<SelectListItem> { };
+                ViewBag.MatchCasteList = new List<SelectListItem> { };
+                ViewBag.MatchSubCasteList = new List<SelectListItem> { };
+                ViewBag.EducationField = new List<SelectListItem> { };
+
+
+                return View("MatchPreferanceView", "_Layout", matchobjvm);
             }
+        }
+
+        public ActionResult UserMatchPreferance(MatchPreferance matchobj)
+        {
+
+            int nextPageIndex;
+            if (Session["SignUpPageIndex"] == null)
+            {
+                return RedirectToAction("Index", "User");
+            }
+            else
+            {
+                nextPageIndex = Convert.ToInt32(Session["SignUpPageIndex"]);
+                nextPageIndex++;
+
+                UserRegistrationBAL obj = new UserRegistrationBAL();
+                GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
+                matchobj.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
+
+                matchobj.MatchHeightFitFrom = Convert.ToInt32(Request.Form["MatchHeightFitFrom"]);
+                matchobj.MatchHeightInchFrom = Convert.ToInt32(Request.Form["MatchHeightInchFrom"]);
+                matchobj.MatchHeightFitTo = Convert.ToInt32(Request.Form["MatchHeightFitTo"]);
+                matchobj.MatchHeightInchTo = Convert.ToInt32(Request.Form["MatchHeightInchTo"]);
+                matchobj.MatchAgeRangeFrom = Convert.ToInt32(Request.Form["MatchAgeRangeFrom"]);
+                matchobj.MatchAgeRangeTo = Convert.ToInt32(Request.Form["MatchAgeRangeTo"]);
+                matchobj.MatchCountry = Convert.ToInt32(Request.Form["MatchCountry"]);
+                matchobj.MatchState = Convert.ToInt32(Request.Form["MatchState"]);
+                matchobj.MatchCity = Convert.ToInt32(Request.Form["MatchCity"]);
+                matchobj.MatchMarritalStatus = Convert.ToInt32(Request.Form["MatchMarritalStatus"]);
+                matchobj.MatchReligion = Convert.ToInt32(Request.Form["MatchReligion"]);
+                matchobj.MatchCaste = Convert.ToInt32(Request.Form["MatchCaste"]);
+                matchobj.MatchSubCaste = Convert.ToInt32(Request.Form["MatchSubCaste"]);
+                matchobj.GotraName = Request.Form["GotraName"];
+                matchobj.RashiId = Convert.ToInt32(Request.Form["RashiId"]);
+                matchobj.MatchLanguage = Convert.ToInt32(Request.Form["MatchLanguage"]);
+                matchobj.MatchManglikState = Convert.ToInt32(Request.Form["MatchManglikState"]);
+                matchobj.MatchEducationClass = Convert.ToInt32(Request.Form["MatchEducationClass"]);
+                matchobj.MatchEducationField = Convert.ToInt32(Request.Form["MatchEducationField"]);
+                matchobj.MatchJobField = Convert.ToInt32(Request.Form["MatchJobField"]);
+                matchobj.MatchFoodHabbit = Convert.ToInt32(Request.Form["MatchFoodHabbit"]);
+                matchobj.MatchIsEggetarian = Convert.ToInt32(Request.Form["MatchIsEggetarian"]);
+                matchobj.MatchIsSmoke = Convert.ToInt32(Request.Form["MatchIsSmoke"]);
+                matchobj.MatchIsDrink = Convert.ToInt32(Request.Form["MatchIsDrink"]);
+                matchobj.MatchSkinComplexion = Convert.ToInt32(Request.Form["MatchSkinComplexion"]);
+                matchobj.MatchBodyType = Convert.ToInt32(Request.Form["MatchBodyType"]);
+                matchobj.MatchPD = Convert.ToInt32(Request.Form["MatchPD"]);
+                matchobj.MatchAboutPartner = Request.Form["MatchAboutPartner"];
+
+                bool status = obj.AddMatchPreferanceBAL(matchobj);
+            }
+            return View("WelcomePage", "_Layout");
         }
     }
 }

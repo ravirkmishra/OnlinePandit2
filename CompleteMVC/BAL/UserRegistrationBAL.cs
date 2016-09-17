@@ -48,5 +48,10 @@ namespace CompleteMVC.BAL
         {
             return obj.AddUserHabbitsAndHobbiesInterestsDAL(hobbiesobj);
         }
+
+        public bool AddMatchPreferanceBAL(MatchPreferance matchobj)
+        {
+            return obj.AddMatchPreferanceDAL(matchobj);
+        }
     }
 }

@@ -6,6 +6,7 @@ using System.Web;
 
 namespace CompleteMVC.Models
 {
+    [Table("tblUserHabbits")]
     public class Hobbies
     {
         [Column("id")]

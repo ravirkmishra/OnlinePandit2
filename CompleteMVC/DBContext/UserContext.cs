@@ -55,6 +55,8 @@ namespace CompleteMVC.DAL
 
         public DbSet<FoodHabbits> FoodHabbit { get; set; }
 
+        public DbSet<MatchPreferance> UserMatchPreferances { get; set; }
+
         public DbSet<PanditModel> Pandits { get; set;}
         public DbSet<PanditBookingModel> PanditBookings  { get; set; }
         public DbSet<PujaModel>  Pujas { get; set; }
