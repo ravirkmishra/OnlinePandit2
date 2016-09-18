@@ -52,6 +52,28 @@ namespace CompleteMVC.DAL
             }
             return dict;
         }
+
+        public Dictionary<int, string> GetListGenderDAL()
+        {
+            Dictionary<int, string> dict = new Dictionary<int, string>();
+            using (var dbcontext = new UserContext())
+            {
+                //var idParam = new SqlParameter
+                //{
+                //    ParameterName = "countryId",
+                //    Value = countryId
+                //};
+
+                var result = dbcontext.Database.SqlQuery<Gender>("exec sp_GetListGender");
+
+                foreach (var item in result)
+                {
+                    dict.Add(item.Id, item.GenderName);
+                }
+            }
+            return dict;
+        }
+
         public Dictionary<int, string> GetStateLisByCountryIdDAL(int countryId)
         {
             Dictionary<int, string> dict = new Dictionary<int, string>();

@@ -6,22 +6,23 @@ using System.Web;
 
 namespace CompleteMVC.ViewModel
 {
-    public class UserSignUpVM:BaseViewModel
+    public class UserSignUpVM : BaseViewModel
     {
-        [Required(ErrorMessage ="* Required First Name")]
+        [Required(ErrorMessage = "* Required First Name")]
         public string UserFirstName { get; set; }
         public string UserMiddleName { get; set; }
         [Required(ErrorMessage = "* Required Last Name")]
         public string UserLastName { get; set; }
+        [Required(ErrorMessage = "* Required Gender")]
+        public int Gender { get; set; }
         [Required(ErrorMessage = "* Required Password")]
         public string UserPassword { get; set; }
-
         [Required(ErrorMessage = "* Confirm Password"), Compare("UserPassword")]
         public string UserConfirmPassword { get; set; }
         [Required(ErrorMessage = "* Required Email Address"), EmailAddress(ErrorMessage = "*")]
         public string UserEmail { get; set; }
         [Required(ErrorMessage = "* Required Contact Details")]
         public string UserContact { get; set; }
-
+        public Dictionary<int, string> listGender { get; set; }
     }
 }

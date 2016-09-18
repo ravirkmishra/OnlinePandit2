@@ -37,10 +37,18 @@
     </style>
     <script>
 
-        function GetStatesList(sourcecontrolname, destcontrolname) {
+        function GetStatesList(sourcecontrolname, destcontrolname, cityControlName) {
             var sourcecontolId = '#' + sourcecontrolname;
             var destControlId = '#' + destcontrolname;
+            var cityControlId = '#' + cityControlName;
             var Id = $(sourcecontolId).val();
+            if (Id == "") {
+                var markupState = "<option value=''>Select State...</option>";
+                var markupCity = "<option value=''>Select City...</option>";
+                $(destControlId).html(markupState); // clear before appending new list
+                $(cityControlId).html(markupCity); // clear before appending new list
+            }
+
             $.ajax({
                 url: '/UserRegistration/GetStates',
                 type: "POST",
@@ -66,7 +74,7 @@
             else {
                 $('#JobFieldFather').hide();
             }
-      
+
 
             if ($('#FatherWorkingStatus').val() == 1) {
                 $('#JobFieldMother').show();
@@ -80,6 +88,12 @@
             var sourcecontolId = '#' + sourcecontrolname;
             var destControlId = '#' + destcontrolname;
             var StateId = $(sourcecontolId).val();
+
+            if (StateId == "") {
+                var markup = "<option value=''>Select City...</option>";
+                $(destControlId).html(markup); // clear before appending new list
+            }
+
             $.ajax({
                 url: '/UserRegistration/GetCities',
                 type: "POST",
@@ -104,6 +118,13 @@
         function GetCasteList() {
 
             var Id = $('#UserReligionId').val();
+            if (Id == "") {
+                var markupCaste = "<option value=''>Select Caste...</option>";
+                $("#UserCasteId").html(markupCaste).show();
+                var markupSubCaste = "<option value=''>Select SubCaste...</option>";
+                $("#UserSubCasteId").html(markupSubCaste).show();
+            }
+
             $.ajax({
                 url: '/UserRegistration/GetCastesList',
                 type: "POST",
@@ -124,6 +145,12 @@
         function GetSubCasteList() {
 
             var Id = $('#UserCasteId').val();
+
+            if (Id == "") {
+                var markup = "<option value=''>Select SubCaste...</option>";
+                $("#UserSubCasteId").html(markup).show();
+            }
+
             $.ajax({
                 url: '/UserRegistration/GetSubCastesList',
                 type: "POST",
@@ -224,7 +251,7 @@
                         Country Living In:
                     </td>
                     <td>
-                        @Html.DropDownListFor(m => m.UserLivingCountryId, new SelectList(Model.listLivingCountryId, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('UserLivingCountryId','UserLivingStateId');" })
+                        @Html.DropDownListFor(m => m.UserLivingCountryId, new SelectList(Model.listLivingCountryId, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('UserLivingCountryId','UserLivingStateId', 'UserLivingCityId');" })
                     </td>
                 </tr>
                 <tr>
@@ -350,7 +377,7 @@
                         Family Living In:
                     </td>
                     <td>
-                        @Html.DropDownListFor(m => m.FamilyResidingCountryId, new SelectList(Model.listFamilyResidingCountry, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('FamilyResidingCountryId', 'FamilyResidingStateId');" })
+                        @Html.DropDownListFor(m => m.FamilyResidingCountryId, new SelectList(Model.listFamilyResidingCountry, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('FamilyResidingCountryId', 'FamilyResidingStateId', 'FamilyResidingCityId');" })
                     </td>
                 </tr>
                 <tr>
@@ -408,6 +435,7 @@
                 <tr>
                     <td align="left" colspan="3">
                         <input type="submit" id="SocialDetails" name="SocialDetails" value="Save and Next" />
+                        <input type="submit" id="Skip" name="Skip" value="Skip For Later" />
                     </td>
                 </tr>
             </table>

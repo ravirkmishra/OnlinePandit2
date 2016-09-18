@@ -2,11 +2,11 @@
 @model HobbiesAndInterestsVM
 
 @section TitleSection{
-    HobbiesAndInterestSection
+    Hobbies And Interest Section
 }
 @section HeaderSection{
     <style>
-        table {
+        /*table {
             border: 1px solid Black;
         }
 
@@ -20,7 +20,7 @@
 
         th {
             border: 1px solid Black;
-        }
+        }*/
 
         .error {
             color: darkred;
@@ -94,7 +94,7 @@
                         @Html.TextAreaFor(m => m.FoodFondOf)
                     </td>
                 </tr>
-              
+
                 <tr>
 
                     <td>
@@ -147,6 +147,7 @@
                 <tr>
                     <td align="left" colspan="3">
                         <input type="submit" id="Hobbies" name="Hobbies" value="Save and Next" />
+                        <input type="submit" id="Skip" name="Skip" value="Skip For Later" />
                     </td>
                 </tr>
             </table>

@@ -5,11 +5,11 @@
 
 
 @section TitleSection{
-    UserMatchPreferance
+    Required Match Preferance
 }
 @section HeaderSection{
     <style>
-        table {
+        /*table {
             border: 1px solid Black;
         }
 
@@ -23,17 +23,24 @@
 
         th {
             border: 1px solid Black;
-        }
+        }*/
 
         .error {
             color: darkred;
         }
     </style>
     <script>
-        function GetStatesList(sourcecontrolname, destcontrolname) {
+        function GetStatesList(sourcecontrolname, destcontrolname, cityControlName) {
             var sourcecontolId = '#' + sourcecontrolname;
             var destControlId = '#' + destcontrolname;
+            var cityControlId = '#' + cityControlName;
             var Id = $(sourcecontolId).val();
+            if (Id == "") {
+                var markupSate = "<option value=''>Select State...</option>";
+                $(destControlId).html(markupSate).show();
+                var markupCity = "<option value=''>Select City...</option>";
+                $(cityControlId).html(markupCity).show();
+            }
             $.ajax({
                 url: '/UserRegistration/GetStates',
                 type: "POST",
@@ -56,6 +63,10 @@
             var sourcecontolId = '#' + sourcecontrolname;
             var destControlId = '#' + destcontrolname;
             var StateId = $(sourcecontolId).val();
+            if (StateId == "") {
+                var markup = "<option value=''>Select City...</option>";
+                $(destControlId).html(markup).show();
+            }
             $.ajax({
                 url: '/UserRegistration/GetCities',
                 type: "POST",
@@ -79,6 +90,10 @@
         function GetEducationField() {
 
             var Id = $('#MatchEducationClass').val();
+            if (Id == "") {
+                var markup = "<option value=''>Select Education Field...</option>";
+                $("#MatchEducationField").html(markup).show();
+            }
             $.ajax({
                 url: '/UserRegistration/GetEducationFields',
                 type: "POST",
@@ -125,6 +140,12 @@
         function GetCasteList() {
 
             var Id = $('#MatchReligion').val();
+            if (Id == "") {
+                var markupCaste = "<option value=''>Select Caste...</option>";
+                $("#MatchCaste").html(markupCaste).show();
+                var markupSubCaste = "<option value=''>Select SubCaste...</option>";
+                $("#MatchSubCaste").html(markupSubCaste).show();
+            }
             $.ajax({
                 url: '/UserRegistration/GetCastesList',
                 type: "POST",
@@ -221,7 +242,7 @@
                         Match Country:
                     </td>
                     <td>
-                        @Html.DropDownListFor(m => m.MatchCountry, new SelectList(Model.listMatchCountry, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('MatchCountry','MatchState');" })
+                        @Html.DropDownListFor(m => m.MatchCountry, new SelectList(Model.listMatchCountry, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('MatchCountry','MatchState', 'MatchCity');" })
                     </td>
                 </tr>
                 <tr>
@@ -326,7 +347,7 @@
                 <tr id="trEggetarian">
                     <td>Eggetarian:</td>
                     <td>
-                        @Html.DropDownListFor(m => m.MatchIsEggetarian, new SelectList(Model.listYesNo, "Key", "Value", 0), "Select...")
+                        @Html.DropDownListFor(m => m.MatchIsEggetarian, new SelectList(Model.listMatchHabbitsType, "Key", "Value", 0), "Select...")
                     </td>
                 </tr>
                 <tr>

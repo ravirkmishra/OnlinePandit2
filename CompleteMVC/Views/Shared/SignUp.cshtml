@@ -3,11 +3,11 @@
 
 
 @section TitleSection{
-    SignUpView
+    Primary Details
 }
 @section HeaderSection{
     <style>
-        table {
+        /*table {
             border: 1px solid Black;
         }
 
@@ -21,7 +21,7 @@
 
         th {
             border: 1px solid Black;
-        }
+        }*/
 
         .error {
             color: darkred;
@@ -81,6 +81,17 @@
                     <tr>
                         <td colspan="2">
                             @Html.ValidationMessageFor(m => m.UserLastName, "", new { @class = "error" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Gender:</td>
+                        <td colspan="2">
+                            @Html.DropDownListFor(m => m.Gender, new SelectList(Model.listGender, "Key", "Value"), "Select...")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "error" })
                         </td>
                     </tr>
                     <tr>

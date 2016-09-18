@@ -45,11 +45,14 @@ namespace CompleteMVC.Controllers
         [HeaderFooterFilter]
         public ActionResult SignUp()
         {
+            UserSignUpVM usignvm = new UserSignUpVM();
+            GetMasterDataBAL masterobj = new GetMasterDataBAL();
+            usignvm.listGender = masterobj.GetListGenderBAL();
             if (Session["User"] == null)
             {
-                return View("SignUp", "_Layout");
+                return View("SignUp", "_Layout", usignvm);
             }
-            return View("SignUp", "_Layout");
+            return View("SignUp", "_Layout", usignvm);
         }
 
 

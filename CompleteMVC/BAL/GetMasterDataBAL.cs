@@ -39,6 +39,12 @@ namespace CompleteMVC.BAL
         {
             return obj.GetEducationFieldsByClassIdDAL(qualificationClassId);
         }
+
+        public Dictionary<int, string> GetListGenderBAL()
+        {
+            return obj.GetListGenderDAL();
+        }
+
         public Dictionary<int, string> GetJobFieldsBAL(int jobFieldId)
         {
             return obj.GetJobFieldsDAL(jobFieldId);

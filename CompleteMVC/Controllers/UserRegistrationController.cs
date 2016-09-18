@@ -22,6 +22,7 @@ namespace CompleteMVC.Controllers
         [HeaderFooterFilter]
         public ActionResult SignUp(UserSignUpVM users)
         {
+
             if (ModelState.IsValid)
             {
                 int nextPageIndex;
@@ -47,6 +48,7 @@ namespace CompleteMVC.Controllers
                     users.UserEmail = Request.Form["UserEmail"];
                     users.UserPassword = Request.Form["UserPassword"];
                     users.UserContact = Request.Form["UserContact"];
+                    
 
                     modobj.UserFirstName = users.UserFirstName;
                     modobj.UserMiddleName = users.UserMiddleName;
@@ -54,6 +56,7 @@ namespace CompleteMVC.Controllers
                     modobj.UserEmail = users.UserEmail;
                     modobj.UserPassword = users.UserPassword;
                     modobj.UserContact = users.UserContact;
+                    modobj.Gender = Convert.ToInt32(Request.Form["Gender"]);
                     obj.AddUser(modobj);
                     Session["User"] = modobj.UserEmail;
                     FormsAuthentication.SetAuthCookie(modobj.UserEmail, false);
@@ -145,6 +148,9 @@ namespace CompleteMVC.Controllers
 
         public ActionResult SignUp2(Users_ImageVM userImageVM)
         {
+            string buttonSave = Request.Form["SignUp2"];
+            string buttonSkip = Request.Form["Skip"];
+
             int nextPageIndex;
             if (Session["SignUpPageIndex"] == null)
             {
@@ -152,28 +158,45 @@ namespace CompleteMVC.Controllers
             }
             else
             {
-                nextPageIndex = Convert.ToInt32(Session["SignUpPageIndex"]);
-                nextPageIndex++;
+                if (buttonSave == "Save and Next" && string.IsNullOrEmpty(buttonSkip))
+                {
+                    nextPageIndex = Convert.ToInt32(Session["SignUpPageIndex"]);
+                    nextPageIndex++;
 
-                UserRegistrationBAL obj = new UserRegistrationBAL();
-                HttpPostedFileBase imagefile = Request.Files["ImageData"];
-                GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
-                Users_Image userImage = new Users_Image();
-                userImage.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
-                userImage.UserImageFile = ConvertToBytes(imagefile);
-                bool a = obj.UploadImageBAL(userImage);
+                    UserRegistrationBAL obj = new UserRegistrationBAL();
+                    HttpPostedFileBase imagefile = Request.Files["ImageData"];
+                    GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
+                    Users_Image userImage = new Users_Image();
+                    userImage.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
+                    userImage.UserImageFile = ConvertToBytes(imagefile);
+                    bool a = obj.UploadImageBAL(userImage);
 
-                Session["SignUpPageindex"] = nextPageIndex;
+                    Session["SignUpPageindex"] = nextPageIndex;
 
-                UserPhysicalDetailsVM upd = new UserPhysicalDetailsVM();
-                //upd.listBodyColourId = new SelectList("Select...", 0);
-                upd.listBodyColourId = getUserdetailsBAL.GetBodyColorOptionsBAL();
-                return View("PhysicalDetials", "_Layout", upd);
+                    return PreparePhysicalDetailPage(getUserdetailsBAL);
+                }
+                else
+                {
+                    GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
+                    Users_Image userImage = new Users_Image();
+                    userImage.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
+                    return PreparePhysicalDetailPage(getUserdetailsBAL);
+                }
             }
+        }
+
+        private ActionResult PreparePhysicalDetailPage(GetUserDetailsBAL getUserdetailsBAL)
+        {
+            UserPhysicalDetailsVM upd = new UserPhysicalDetailsVM();
+            //upd.listBodyColourId = new SelectList("Select...", 0);
+            upd.listBodyColourId = getUserdetailsBAL.GetBodyColorOptionsBAL();
+            return View("PhysicalDetials", "_Layout", upd);
         }
 
         public ActionResult UserPhysicalDetails(User_PhysiqueDetails userPhisique)
         {
+            string buttonSave = Request.Form["PhysicalDetails"];
+            string buttonSkip = Request.Form["Skip"];
             int nextPageIndex;
             if (Session["SignUpPageIndex"] == null)
             {
@@ -181,44 +204,60 @@ namespace CompleteMVC.Controllers
             }
             else
             {
-                nextPageIndex = Convert.ToInt32(Session["SignUpPageIndex"]);
-                nextPageIndex++;
+                if (buttonSave == "Save and Next" && string.IsNullOrEmpty(buttonSkip))
+                {
 
-                UserRegistrationBAL obj = new UserRegistrationBAL();
-                GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
+                    nextPageIndex = Convert.ToInt32(Session["SignUpPageIndex"]);
+                    nextPageIndex++;
 
-                User_PhysiqueDetails userPhisiquedetails = new User_PhysiqueDetails();
+                    UserRegistrationBAL obj = new UserRegistrationBAL();
+                    GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
 
-                userPhisiquedetails.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
+                    User_PhysiqueDetails userPhisiquedetails = new User_PhysiqueDetails();
 
-                userPhisique.UserId = userPhisiquedetails.UserId;
-                userPhisique.UserHeightInch = Convert.ToInt32(Request.Form["UserHeightInch"]);
-                userPhisique.UserHeightFit = Convert.ToInt32(Request.Form["UserHeightFit"]);
-                userPhisique.UserBodyColour = Convert.ToInt32(Request.Form["UserBodyColourId"]);
-                userPhisique.UserDOB = (Convert.ToDateTime(Request.Form["UserDOBDD"] + "-" + Request.Form["UserDOBMM"] + "-" + Request.Form["UserDOBYYYY"]));
-                userPhisique.UserDOBTimeHHMMSS = Convert.ToDateTime(Request.Form["UserDOBTimeHH"] + ":" + Request.Form["UserDOBTimeMM"] + ":" + Request.Form["UserDOBTimeSS"]);
-                userPhisique.WeightMeasure = Convert.ToInt32(Request.Form["WeightMeasure"]);
+                    userPhisiquedetails.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
 
-                bool status = obj.AddPhysicalDetailsBAL(userPhisique);
+                    userPhisique.UserId = userPhisiquedetails.UserId;
+                    userPhisique.UserHeightInch = Convert.ToInt32(Request.Form["UserHeightInch"]);
+                    userPhisique.UserHeightFit = Convert.ToInt32(Request.Form["UserHeightFit"]);
+                    userPhisique.UserBodyColour = Convert.ToInt32(Request.Form["UserBodyColourId"]);
+                    userPhisique.UserDOB = (Convert.ToDateTime(Request.Form["UserDOBDD"] + "-" + Request.Form["UserDOBMM"] + "-" + Request.Form["UserDOBYYYY"]));
+                    userPhisique.UserDOBTimeHHMMSS = Convert.ToDateTime(Request.Form["UserDOBTimeHH"] + ":" + Request.Form["UserDOBTimeMM"] + ":" + Request.Form["UserDOBTimeSS"]);
+                    userPhisique.WeightMeasure = Convert.ToInt32(Request.Form["WeightMeasure"]);
 
-                UserEducationDetailsVM userEduCarrer = new UserEducationDetailsVM();
-                GetMasterDataBAL masterdataobj = new GetMasterDataBAL();
+                    bool status = obj.AddPhysicalDetailsBAL(userPhisique);
 
-                userEduCarrer.listCountry = masterdataobj.GetCountryListBAL();
-                userEduCarrer.listJobField = masterdataobj.GetJobFieldsBAL();
-                userEduCarrer.listQualificationClass = masterdataobj.GetQualificationClassBAL();
-                userEduCarrer.listUserIncome = masterdataobj.GetIncomeRangeBAL();
-
-                ViewBag.EducationField = new List<SelectListItem> { };
-                ViewBag.StateList = new List<SelectListItem> { };
-                ViewBag.CityList = new List<SelectListItem> { };
-
-                return View("EducationDetails", "_Layout", userEduCarrer);
+                    return PrepareUserEducationPage();
+                }
+                else
+                {
+                    return PrepareUserEducationPage();
+                }
             }
 
         }
+
+        private ActionResult PrepareUserEducationPage()
+        {
+            UserEducationDetailsVM userEduCarrer = new UserEducationDetailsVM();
+            GetMasterDataBAL masterdataobj = new GetMasterDataBAL();
+
+            userEduCarrer.listCountry = masterdataobj.GetCountryListBAL();
+            userEduCarrer.listJobField = masterdataobj.GetJobFieldsBAL();
+            userEduCarrer.listQualificationClass = masterdataobj.GetQualificationClassBAL();
+            userEduCarrer.listUserIncome = masterdataobj.GetIncomeRangeBAL();
+
+            ViewBag.EducationField = new List<SelectListItem> { };
+            ViewBag.StateList = new List<SelectListItem> { };
+            ViewBag.CityList = new List<SelectListItem> { };
+
+            return View("EducationDetails", "_Layout", userEduCarrer);
+        }
+
         public ActionResult UserEducationDetails(UserEducationCareer userEduCarrer)
         {
+            string buttonSave = Request.Form["EducationDetails"];
+            string buttonSkip = Request.Form["Skip"];
             int nextPageIndex;
             if (Session["SignUpPageIndex"] == null)
             {
@@ -226,61 +265,76 @@ namespace CompleteMVC.Controllers
             }
             else
             {
-                nextPageIndex = Convert.ToInt32(Session["SignUpPageIndex"]);
-                nextPageIndex++;
+                if (buttonSave == "Save and Next" && string.IsNullOrEmpty(buttonSkip))
+                {
+                    nextPageIndex = Convert.ToInt32(Session["SignUpPageIndex"]);
+                    nextPageIndex++;
 
-                UserRegistrationBAL obj = new UserRegistrationBAL();
-                GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
+                    UserRegistrationBAL obj = new UserRegistrationBAL();
+                    GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
 
-                User_PhysiqueDetails userPhisiquedetails = new User_PhysiqueDetails();
+                    User_PhysiqueDetails userPhisiquedetails = new User_PhysiqueDetails();
 
-                userPhisiquedetails.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
+                    userPhisiquedetails.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
 
-                userEduCarrer.UserId = userPhisiquedetails.UserId;
-                userEduCarrer.UserMaxQualificationClass = Request.Form["UserMaxQualificationClass"];
-                userEduCarrer.UserEducationField = Request.Form["UserEducationField"];
-                userEduCarrer.UserEducationSchool = Request.Form["UserEducationSchool"];
-                userEduCarrer.UserJobStatus = Convert.ToInt32(Request.Form["UserJobStatus"]);
-                userEduCarrer.UserJobCompany = Request.Form["UserJobCompany"];
-                userEduCarrer.UserJobField = Request.Form["UserJobField"];
-                userEduCarrer.UserJobDesc = Request.Form["UserJobDesc"];
-                userEduCarrer.UserJobCountry = Request.Form["UserJobCountry"];
-                userEduCarrer.UserJobState = Request.Form["UserJobState"];
-                userEduCarrer.UserJobCity = Request.Form["UserJobCity"];
-                userEduCarrer.UserIncomeId = Convert.ToInt32(Request.Form["UserIncomeId"]);
-                userEduCarrer.Designation = Request.Form["Designation"];
+                    userEduCarrer.UserId = userPhisiquedetails.UserId;
+                    userEduCarrer.UserMaxQualificationClass = Request.Form["UserMaxQualificationClass"];
+                    userEduCarrer.UserEducationField = Request.Form["UserEducationField"];
+                    userEduCarrer.UserEducationSchool = Request.Form["UserEducationSchool"];
+                    userEduCarrer.UserJobStatus = Convert.ToInt32(Request.Form["UserJobStatus"]);
+                    userEduCarrer.UserJobCompany = Request.Form["UserJobCompany"];
+                    userEduCarrer.UserJobField = Request.Form["UserJobField"];
+                    userEduCarrer.UserJobDesc = Request.Form["UserJobDesc"];
+                    userEduCarrer.UserJobCountry = Request.Form["UserJobCountry"];
+                    userEduCarrer.UserJobState = Request.Form["UserJobState"];
+                    userEduCarrer.UserJobCity = Request.Form["UserJobCity"];
+                    userEduCarrer.UserIncomeId = Convert.ToInt32(Request.Form["UserIncomeId"]);
+                    userEduCarrer.Designation = Request.Form["Designation"];
 
-                bool status = obj.AddEducationDetailsBAL(userEduCarrer);
+                    bool status = obj.AddEducationDetailsBAL(userEduCarrer);
 
-                UserSocialDetailsVM userSocialvm = new UserSocialDetailsVM();
-                GetMasterDataBAL masterdataobj = new GetMasterDataBAL();
-
-                userSocialvm.UserId = userPhisiquedetails.UserId;
-
-                userSocialvm.listFamilyResidingCountry = masterdataobj.GetCountryListBAL();
-                userSocialvm.listReligion = masterdataobj.GetReligionListBAL();
-                userSocialvm.listRashi = masterdataobj.GetRashiListBAL();
-                userSocialvm.listLivingCountryId = masterdataobj.GetCountryListBAL();
-                userSocialvm.listFamilyIncome = masterdataobj.GetIncomeRangeBAL();
-                userSocialvm.listJobField = masterdataobj.GetJobFieldsBAL();
-                userSocialvm.ListLanguages = masterdataobj.GetAllLangueagesBAL();
-                userSocialvm.ListYesNo = masterdataobj.GetYesNoValuesBAL();
-                userSocialvm.ListDressingStyle = masterdataobj.GetDressingStylesBAL();
-                userSocialvm.ListProfileManager = masterdataobj.GetProfileManagerBAL();
-
-                ViewBag.CasteList = new List<SelectListItem> { };
-                ViewBag.SubCasteList = new List<SelectListItem> { };
-                ViewBag.LivingStateList = new List<SelectListItem> { };
-                ViewBag.LivingCityList = new List<SelectListItem> { };
-                ViewBag.FamilyResidingStateList = new List<SelectListItem> { };
-                ViewBag.FamilyResidingCityList = new List<SelectListItem> { };
-                ViewBag.JobFieldList = new List<SelectListItem> { };
-
-                ViewBag.ShowHodeJob = false;
-
-                return View("SocialDetails", "_Layout", userSocialvm);
+                    return PrepareUserSocialDetailsPage(userPhisiquedetails);
+                }
+                else
+                {
+                    User_PhysiqueDetails userPhisiquedetails = new User_PhysiqueDetails();
+                    GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
+                    userPhisiquedetails.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
+                    return PrepareUserSocialDetailsPage(userPhisiquedetails);
+                }
             }
 
+        }
+
+        private ActionResult PrepareUserSocialDetailsPage(User_PhysiqueDetails userPhisiquedetails)
+        {
+            UserSocialDetailsVM userSocialvm = new UserSocialDetailsVM();
+            GetMasterDataBAL masterdataobj = new GetMasterDataBAL();
+
+            userSocialvm.UserId = userPhisiquedetails.UserId;
+
+            userSocialvm.listFamilyResidingCountry = masterdataobj.GetCountryListBAL();
+            userSocialvm.listReligion = masterdataobj.GetReligionListBAL();
+            userSocialvm.listRashi = masterdataobj.GetRashiListBAL();
+            userSocialvm.listLivingCountryId = masterdataobj.GetCountryListBAL();
+            userSocialvm.listFamilyIncome = masterdataobj.GetIncomeRangeBAL();
+            userSocialvm.listJobField = masterdataobj.GetJobFieldsBAL();
+            userSocialvm.ListLanguages = masterdataobj.GetAllLangueagesBAL();
+            userSocialvm.ListYesNo = masterdataobj.GetYesNoValuesBAL();
+            userSocialvm.ListDressingStyle = masterdataobj.GetDressingStylesBAL();
+            userSocialvm.ListProfileManager = masterdataobj.GetProfileManagerBAL();
+
+            ViewBag.CasteList = new List<SelectListItem> { };
+            ViewBag.SubCasteList = new List<SelectListItem> { };
+            ViewBag.LivingStateList = new List<SelectListItem> { };
+            ViewBag.LivingCityList = new List<SelectListItem> { };
+            ViewBag.FamilyResidingStateList = new List<SelectListItem> { };
+            ViewBag.FamilyResidingCityList = new List<SelectListItem> { };
+            ViewBag.JobFieldList = new List<SelectListItem> { };
+
+            ViewBag.ShowHodeJob = false;
+
+            return View("SocialDetails", "_Layout", userSocialvm);
         }
 
         [HttpPost]
@@ -340,6 +394,9 @@ namespace CompleteMVC.Controllers
 
         public ActionResult UserSocialDetails(UserSocialDetails userSocial)
         {
+            string buttonSave = Request.Form["SocialDetails"];
+            string buttonSkip = Request.Form["Skip"];
+
             int nextPageIndex;
             if (Session["SignUpPageIndex"] == null)
             {
@@ -347,74 +404,91 @@ namespace CompleteMVC.Controllers
             }
             else
             {
-                nextPageIndex = Convert.ToInt32(Session["SignUpPageIndex"]);
-                nextPageIndex++;
-
-                UserRegistrationBAL obj = new UserRegistrationBAL();
-                GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
-
-                User_PhysiqueDetails userPhisiquedetails = new User_PhysiqueDetails();
-
-                userPhisiquedetails.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
-
-                userSocial.UserId = userPhisiquedetails.UserId;
-                userSocial.UserReligionId = Convert.ToInt32(Request.Form["UserReligionId"]);
-                userSocial.UserCasteId = Convert.ToInt32(Request.Form["UserCasteId"]);
-                userSocial.UserSubCasteId = Convert.ToInt32(Request.Form["UserSubCasteId"]);
-                userSocial.RashiId = Convert.ToInt32(Request.Form["RashiId"]);
-                userSocial.GotraName = Request.Form["GotraName"];
-                userSocial.UserLivingCountryId = Convert.ToInt32(Request.Form["UserLivingCountryId"]);
-                userSocial.UserLivingStateId = Convert.ToInt32(Request.Form["UserLivingStateId"]);
-                userSocial.UserLivingCityId = Convert.ToInt32(Request.Form["UserLivingCityId"]);
-                userSocial.UserLivingZipCode = Convert.ToInt32(Request.Form["UserLivingZipCode"]);
-                userSocial.UserCompleteAddress = Request.Form["UserCompleteAddress"];
-                userSocial.AboutYou = Request.Form["AboutYou"];
-                userSocial.AboutFamily = Request.Form["AboutFamily"];
-                userSocial.NoOfBrothers = Convert.ToInt32(Request.Form["NoOfBrothers"]);
-                userSocial.NoOfSisters = Convert.ToInt32(Request.Form["NoOfSisters"]);
-                userSocial.NoOfBrothersMarried = Convert.ToInt32(Request.Form["NoOfBrothersMarried"]);
-                userSocial.NoOfSistersMarried = Convert.ToInt32(Request.Form["NoOfSistersMarried"]);
-                userSocial.FamilyIncomeId = Convert.ToInt32(Request.Form["FamilyIncomeId"]);
-                userSocial.IsJointFamily = Convert.ToBoolean(Request.Form["IsJointFamily"]);
-                userSocial.FamilyResidingCountryId = Convert.ToInt32(Request.Form["FamilyResidingCountryId"]);
-                userSocial.FamilyResidingStateId = Convert.ToInt32(Request.Form["FamilyResidingStateId"]);
-                userSocial.FamilyResidingCityId = Convert.ToInt32(Request.Form["FamilyResidingCityId"]);
-                userSocial.FatherWorkingStatus = Convert.ToInt32(Request.Form["FatherWorkingStatus"]);
-                if (userSocial.FatherWorkingStatus == 1)
+                if (buttonSave == "Save and Next" && string.IsNullOrEmpty(buttonSkip))
                 {
-                    userSocial.FatherOccupation = Convert.ToInt32(Request.Form["FatherOccupation"]);
+
+                    nextPageIndex = Convert.ToInt32(Session["SignUpPageIndex"]);
+                    nextPageIndex++;
+
+                    UserRegistrationBAL obj = new UserRegistrationBAL();
+                    GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
+
+                    User_PhysiqueDetails userPhisiquedetails = new User_PhysiqueDetails();
+
+                    userPhisiquedetails.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
+
+                    userSocial.UserId = userPhisiquedetails.UserId;
+                    userSocial.UserReligionId = Convert.ToInt32(Request.Form["UserReligionId"]);
+                    userSocial.UserCasteId = Convert.ToInt32(Request.Form["UserCasteId"]);
+                    userSocial.UserSubCasteId = Convert.ToInt32(Request.Form["UserSubCasteId"]);
+                    userSocial.RashiId = Convert.ToInt32(Request.Form["RashiId"]);
+                    userSocial.GotraName = Request.Form["GotraName"];
+                    userSocial.UserLivingCountryId = Convert.ToInt32(Request.Form["UserLivingCountryId"]);
+                    userSocial.UserLivingStateId = Convert.ToInt32(Request.Form["UserLivingStateId"]);
+                    userSocial.UserLivingCityId = Convert.ToInt32(Request.Form["UserLivingCityId"]);
+                    userSocial.UserLivingZipCode = Convert.ToInt32(Request.Form["UserLivingZipCode"]);
+                    userSocial.UserCompleteAddress = Request.Form["UserCompleteAddress"];
+                    userSocial.AboutYou = Request.Form["AboutYou"];
+                    userSocial.AboutFamily = Request.Form["AboutFamily"];
+                    userSocial.NoOfBrothers = Convert.ToInt32(Request.Form["NoOfBrothers"]);
+                    userSocial.NoOfSisters = Convert.ToInt32(Request.Form["NoOfSisters"]);
+                    userSocial.NoOfBrothersMarried = Convert.ToInt32(Request.Form["NoOfBrothersMarried"]);
+                    userSocial.NoOfSistersMarried = Convert.ToInt32(Request.Form["NoOfSistersMarried"]);
+                    userSocial.FamilyIncomeId = Convert.ToInt32(Request.Form["FamilyIncomeId"]);
+                    userSocial.IsJointFamily = Convert.ToBoolean(Request.Form["IsJointFamily"]);
+                    userSocial.FamilyResidingCountryId = Convert.ToInt32(Request.Form["FamilyResidingCountryId"]);
+                    userSocial.FamilyResidingStateId = Convert.ToInt32(Request.Form["FamilyResidingStateId"]);
+                    userSocial.FamilyResidingCityId = Convert.ToInt32(Request.Form["FamilyResidingCityId"]);
+                    userSocial.FatherWorkingStatus = Convert.ToInt32(Request.Form["FatherWorkingStatus"]);
+                    if (userSocial.FatherWorkingStatus == 1)
+                    {
+                        userSocial.FatherOccupation = Convert.ToInt32(Request.Form["FatherOccupation"]);
+                    }
+                    else
+                    {
+                        userSocial.FatherOccupation = 56;
+                    }
+
+                    userSocial.MotherWorkingStatus = Convert.ToInt32(Request.Form["MotherWorkingStatus"]);
+
+                    if (userSocial.MotherWorkingStatus == 1)
+                    {
+                        userSocial.MotherOccupation = Convert.ToInt32(Request.Form["MotherOccupation"]);
+                    }
+                    else
+                    {
+                        userSocial.MotherOccupation = 56;
+                    }
+
+                    userSocial.LanguageKnown = Convert.ToInt32(Request.Form["LanguageKnown"]);
+                    userSocial.ProfileManager = Convert.ToInt32(Request.Form["ProfileManager"]);
+                    userSocial.DressingStyle = Convert.ToInt32(Request.Form["DressingStyle"]);
+
+                    bool status = obj.AddUserSocialDetailsBAL(userSocial);
+
+                    return PrepareHobbiesAndInterestPage(getUserdetailsBAL);
                 }
                 else
                 {
-                    userSocial.FatherOccupation = 56;
+                    GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
+                    User_PhysiqueDetails userPhisiquedetails = new User_PhysiqueDetails();
+                    userPhisiquedetails.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
+                    userSocial.UserId = userPhisiquedetails.UserId;
+                    return PrepareHobbiesAndInterestPage(getUserdetailsBAL);
                 }
-
-                userSocial.MotherWorkingStatus = Convert.ToInt32(Request.Form["MotherWorkingStatus"]);
-
-                if (userSocial.MotherWorkingStatus == 1)
-                {
-                    userSocial.MotherOccupation = Convert.ToInt32(Request.Form["MotherOccupation"]);
-                }
-                else
-                {
-                    userSocial.MotherOccupation = 56;
-                }
-
-                userSocial.LanguageKnown = Convert.ToInt32(Request.Form["LanguageKnown"]);
-                userSocial.ProfileManager = Convert.ToInt32(Request.Form["ProfileManager"]);
-                userSocial.DressingStyle = Convert.ToInt32(Request.Form["DressingStyle"]);
-
-                bool status = obj.AddUserSocialDetailsBAL(userSocial);
-
-                HobbiesAndInterestsVM hobbiesobj = new HobbiesAndInterestsVM();
-                GetMasterDataBAL masterdataobj = new GetMasterDataBAL();
-                hobbiesobj.ListYesNo = masterdataobj.GetYesNoValuesBAL();
-                hobbiesobj.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
-                hobbiesobj.ListHabbitsType = masterdataobj.GetHabbitsTypeBAL();
-                hobbiesobj.ListFoodHabbits = masterdataobj.GetFoodHabbitsBAL();
-
-                return View("HobbiesAndInterest", "_Layout", hobbiesobj);
             }
+        }
+
+        private ActionResult PrepareHobbiesAndInterestPage(GetUserDetailsBAL getUserdetailsBAL)
+        {
+            HobbiesAndInterestsVM hobbiesobj = new HobbiesAndInterestsVM();
+            GetMasterDataBAL masterdataobj = new GetMasterDataBAL();
+            hobbiesobj.ListYesNo = masterdataobj.GetYesNoValuesBAL();
+            hobbiesobj.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
+            hobbiesobj.ListHabbitsType = masterdataobj.GetHabbitsTypeBAL();
+            hobbiesobj.ListFoodHabbits = masterdataobj.GetFoodHabbitsBAL();
+
+            return View("HobbiesAndInterest", "_Layout", hobbiesobj);
         }
 
         public JsonResult GetCastesList(int Id)
@@ -445,6 +519,8 @@ namespace CompleteMVC.Controllers
         }
         public ActionResult UserHobbiesAndInterest(Hobbies hobbiesobj)
         {
+            string buttonSave = Request.Form["Hobbies"];
+            string buttonSkip = Request.Form["Skip"];
             int nextPageIndex;
             if (Session["SignUpPageIndex"] == null)
             {
@@ -452,58 +528,71 @@ namespace CompleteMVC.Controllers
             }
             else
             {
-                nextPageIndex = Convert.ToInt32(Session["SignUpPageIndex"]);
-                nextPageIndex++;
-
-                UserRegistrationBAL obj = new UserRegistrationBAL();
-                GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
-                hobbiesobj.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
-
-                hobbiesobj.HobbiesName = Request.Form["HobbiesName"];
-                hobbiesobj.FoodFondOf = Request.Form["FoodFondOf"];
-                hobbiesobj.FoodCanCook = Convert.ToInt32(Request.Form["FoodCanCook"]);
-                hobbiesobj.FoodAbletoCook = hobbiesobj.FoodCanCook == 1 ? Request.Form["FoodAbletoCook"] : "";
-                hobbiesobj.FavoriteBooks = Request.Form["FavoriteBooks"];
-                hobbiesobj.FavoriteTVShow = Request.Form["FavoriteTVShow"];
-                hobbiesobj.isVegetarian = Convert.ToInt32(Request.Form["isVegetarian"]);
-                hobbiesobj.isDrink = Convert.ToInt32(Request.Form["isDrink"]);
-                hobbiesobj.isSmoke = Convert.ToInt32(Request.Form["isSmoke"]);
-                if (hobbiesobj.isVegetarian == 1)
+                if (buttonSave == "Save and Next" && string.IsNullOrEmpty(buttonSkip))
                 {
-                    hobbiesobj.isEggetarian = Convert.ToInt32(Request.Form["isEggetarian"]);
+                    nextPageIndex = Convert.ToInt32(Session["SignUpPageIndex"]);
+                    nextPageIndex++;
+
+                    UserRegistrationBAL obj = new UserRegistrationBAL();
+                    GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
+                    hobbiesobj.UserId = getUserdetailsBAL.GetUserDetailsByEmail(Session["User"].ToString()).UserId;
+
+                    hobbiesobj.HobbiesName = Request.Form["HobbiesName"];
+                    hobbiesobj.FoodFondOf = Request.Form["FoodFondOf"];
+                    hobbiesobj.FoodCanCook = Convert.ToInt32(Request.Form["FoodCanCook"]);
+                    hobbiesobj.FoodAbletoCook = hobbiesobj.FoodCanCook == 1 ? Request.Form["FoodAbletoCook"] : "";
+                    hobbiesobj.FavoriteBooks = Request.Form["FavoriteBooks"];
+                    hobbiesobj.FavoriteTVShow = Request.Form["FavoriteTVShow"];
+                    hobbiesobj.isVegetarian = Convert.ToInt32(Request.Form["isVegetarian"]);
+                    hobbiesobj.isDrink = Convert.ToInt32(Request.Form["isDrink"]);
+                    hobbiesobj.isSmoke = Convert.ToInt32(Request.Form["isSmoke"]);
+                    if (hobbiesobj.isVegetarian == 1)
+                    {
+                        hobbiesobj.isEggetarian = Convert.ToInt32(Request.Form["isEggetarian"]);
+                    }
+                    else
+                    {
+                        hobbiesobj.isEggetarian = 3;
+                    }
+
+                    bool status = obj.AddUserHabbitsAndHobbiesInterestsBAL(hobbiesobj);
+
+                    return PrepareUserMatchPreferancePage(getUserdetailsBAL);
                 }
                 else
                 {
-                    hobbiesobj.isEggetarian = 3;
+                    GetUserDetailsBAL getUserdetailsBAL = new GetUserDetailsBAL();
+                    return PrepareUserMatchPreferancePage(getUserdetailsBAL);
                 }
-
-                bool status = obj.AddUserHabbitsAndHobbiesInterestsBAL(hobbiesobj);
-
-                MatchPreferanceVM matchobjvm = new MatchPreferanceVM();
-                GetMasterDataBAL masterdataobj = new GetMasterDataBAL();
-                matchobjvm.listMatchCountry = masterdataobj.GetCountryListBAL();
-                matchobjvm.listMatchReligion = masterdataobj.GetReligionListBAL();
-                matchobjvm.listMarritalStatus = masterdataobj.GetMarritalListBAL();
-                matchobjvm.listMatchRashi = masterdataobj.GetRashiListBAL();
-                matchobjvm.listMatchLanguage = masterdataobj.GetAllLangueagesBAL();
-                matchobjvm.listMatchManglikStatus = masterdataobj.GetManglikStatusListBAL();
-                matchobjvm.listMatchQualificationClass = masterdataobj.GetQualificationClassBAL();
-                matchobjvm.listMatchJobField = masterdataobj.GetJobFieldsBAL();
-                matchobjvm.listMatchFoodHabbits = masterdataobj.GetFoodHabbitsBAL();
-                matchobjvm.listYesNo = masterdataobj.GetYesNoValuesBAL();
-                matchobjvm.listMatchHabbitsType = masterdataobj.GetHabbitsTypeBAL();
-                matchobjvm.listMatchBodyColour = getUserdetailsBAL.GetBodyColorOptionsBAL();
-                matchobjvm.listMatchBodyType = masterdataobj.GetBodyTypeListBAL();
-
-                ViewBag.LivingStateList = new List<SelectListItem> { };
-                ViewBag.LivingCityList = new List<SelectListItem> { };
-                ViewBag.MatchCasteList = new List<SelectListItem> { };
-                ViewBag.MatchSubCasteList = new List<SelectListItem> { };
-                ViewBag.EducationField = new List<SelectListItem> { };
-
-
-                return View("MatchPreferanceView", "_Layout", matchobjvm);
             }
+        }
+
+        private ActionResult PrepareUserMatchPreferancePage(GetUserDetailsBAL getUserdetailsBAL)
+        {
+            MatchPreferanceVM matchobjvm = new MatchPreferanceVM();
+            GetMasterDataBAL masterdataobj = new GetMasterDataBAL();
+            matchobjvm.listMatchCountry = masterdataobj.GetCountryListBAL();
+            matchobjvm.listMatchReligion = masterdataobj.GetReligionListBAL();
+            matchobjvm.listMarritalStatus = masterdataobj.GetMarritalListBAL();
+            matchobjvm.listMatchRashi = masterdataobj.GetRashiListBAL();
+            matchobjvm.listMatchLanguage = masterdataobj.GetAllLangueagesBAL();
+            matchobjvm.listMatchManglikStatus = masterdataobj.GetManglikStatusListBAL();
+            matchobjvm.listMatchQualificationClass = masterdataobj.GetQualificationClassBAL();
+            matchobjvm.listMatchJobField = masterdataobj.GetJobFieldsBAL();
+            matchobjvm.listMatchFoodHabbits = masterdataobj.GetFoodHabbitsBAL();
+            matchobjvm.listYesNo = masterdataobj.GetYesNoValuesBAL();
+            matchobjvm.listMatchHabbitsType = masterdataobj.GetHabbitsTypeBAL();
+            matchobjvm.listMatchBodyColour = getUserdetailsBAL.GetBodyColorOptionsBAL();
+            matchobjvm.listMatchBodyType = masterdataobj.GetBodyTypeListBAL();
+
+            ViewBag.LivingStateList = new List<SelectListItem> { };
+            ViewBag.LivingCityList = new List<SelectListItem> { };
+            ViewBag.MatchCasteList = new List<SelectListItem> { };
+            ViewBag.MatchSubCasteList = new List<SelectListItem> { };
+            ViewBag.EducationField = new List<SelectListItem> { };
+
+
+            return View("MatchPreferanceView", "_Layout", matchobjvm);
         }
 
         public ActionResult UserMatchPreferance(MatchPreferance matchobj)
@@ -544,7 +633,16 @@ namespace CompleteMVC.Controllers
                 matchobj.MatchEducationField = Convert.ToInt32(Request.Form["MatchEducationField"]);
                 matchobj.MatchJobField = Convert.ToInt32(Request.Form["MatchJobField"]);
                 matchobj.MatchFoodHabbit = Convert.ToInt32(Request.Form["MatchFoodHabbit"]);
-                matchobj.MatchIsEggetarian = Convert.ToInt32(Request.Form["MatchIsEggetarian"]);
+
+                if (matchobj.MatchFoodHabbit == 1)
+                {
+                    matchobj.MatchIsEggetarian = Convert.ToInt32(Request.Form["MatchIsEggetarian"]);
+                }
+                else
+                {
+                    matchobj.MatchIsEggetarian = 3;
+                }
+                //matchobj.MatchIsEggetarian = Convert.ToInt32(Request.Form["MatchIsEggetarian"]);
                 matchobj.MatchIsSmoke = Convert.ToInt32(Request.Form["MatchIsSmoke"]);
                 matchobj.MatchIsDrink = Convert.ToInt32(Request.Form["MatchIsDrink"]);
                 matchobj.MatchSkinComplexion = Convert.ToInt32(Request.Form["MatchSkinComplexion"]);
@@ -554,7 +652,7 @@ namespace CompleteMVC.Controllers
 
                 bool status = obj.AddMatchPreferanceBAL(matchobj);
             }
-            return View("WelcomePage", "_Layout");
+            return RedirectToAction("WelcomePage", "User");
         }
     }
 }

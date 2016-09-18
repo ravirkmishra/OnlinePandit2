@@ -151,6 +151,7 @@
     <Compile Include="Models\DressingStyles.cs" />
     <Compile Include="Models\EducationFields.cs" />
     <Compile Include="Models\FoodHabbits.cs" />
+    <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\Gotra.cs" />
     <Compile Include="Models\Habbits.cs" />
     <Compile Include="Models\HabbitsType.cs" />
@@ -209,6 +210,7 @@
     <Content Include="Views\Shared\SocialDetails.cshtml" />
     <Content Include="Views\Shared\HobbiesAndInterest.cshtml" />
     <Content Include="Views\Shared\MatchPreferanceView.cshtml" />
+    <Content Include="Views\Shared\MatchResult.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
