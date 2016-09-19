@@ -8,29 +8,17 @@
 }
 @section HeaderSection{
     <style>
-        /*table {
-            border: 1px solid Black;
-        }
-
-        tr {
-            border: 1px solid Black;
-        }
-
-        td {
-            border: 1px solid Black;
-        }
-
-        th {
-            border: 1px solid Black;
-        }*/
-
         .error {
             color: darkred;
+        }
+
+        .widthForm {
+            width: 70%;
         }
     </style>
     <script type="text/javascript">
         function fileCheck(obj) {
-            
+
             var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
             var myfileExtension = obj.value.split('.').pop();
 
@@ -41,24 +29,22 @@
     </script>
 }
 @section ContentBody{
-    @using (Html.BeginForm("SignUp2", "UserRegistration", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("SignUp2", "UserRegistration", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
     {
-        <div id="SignUp2">
-            <table>
-                <tr>
-                    <td><input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this);" /></td>
-                </tr>
-                <tr>
-                    <td align="left" colspan="2">
-                        <input type="submit" id="SignUp2" name="SignUp2" value="Save and Next" />
-                        <input type="submit" id="Skip" name="Skip" value="Skip For Later" />
-                    </td>
-                    @*<td align="left" colspan="2">
-                        <input type="submit" id="Skip" name="Skip" value="Skip For Later" />
-                    </td>*@
-                </tr>
-            </table>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserImageFile, "Upload Your Photo", new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this);" />
+            </div>
         </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" id="SignUp2" name="SignUp2" value="Save and Next" class="btn btn-default" />
+                <input type="submit" id="Skip" name="Skip" value="Skip For Later" class="btn btn-default" />
+            </div>
+        </div>
+
     }
 }
 

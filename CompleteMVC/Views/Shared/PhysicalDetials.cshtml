@@ -8,22 +8,6 @@
 }
 @section HeaderSection{
     <style>
-        /*table {
-            border: 1px solid Black;
-        }
-
-        tr {
-            border: 1px solid Black;
-        }
-
-        td {
-            border: 1px solid Black;
-        }
-
-        th {
-            border: 1px solid Black;
-        }*/
-
         .error {
             color: darkred;
         }
@@ -32,76 +16,50 @@
 @section ContentBody{
     @using (Html.BeginForm("UserPhysicalDetails", "UserRegistration"))
     {
-        <div id="PhysicalDetailsDiv">
-            <table>
-                <tr>
-                    @*<td colspan="2">
-                        @Html.ValidationSummary(true, "", new { @class = "error" })
-                    </td>*@
-                </tr>
-                <tr>
-                    <td>Height Fit:</td>
-                    <td>
-                        @Html.DropDownListFor(m => m.UserHeightFit, Enumerable.Range(1, 8).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
-                    </td>
-                </tr>
-                <tr>
-                    <td>Height Inch:</td>
-                    <td>
-                        @Html.DropDownListFor(m => m.UserHeightInch, Enumerable.Range(0, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Skin Colour:
-                    </td>
-                    <td>
-                        @Html.DropDownListFor(m => m.UserBodyColourId, new SelectList(Model.listBodyColourId,"Key", "Value"), "Select...")
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        DOB:
-                    </td>
-                    <td>
-                        DD:@Html.DropDownListFor(m => m.UserDOBDD, Enumerable.Range(1, 31).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
-                    </td>
-                    <td>
-                        MM:@Html.DropDownListFor(m => m.UserDOBMM, Enumerable.Range(1, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
-                    </td>
-                    <td>
-                        Year:@Html.DropDownListFor(m => m.UserDOBYYYY, Enumerable.Range(DateTime.Now.Year-60,61).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Time Of Birth:
-                    </td>
-                    <td>
-                        HH:@Html.DropDownListFor(m => m.UserDOBTimeHH, Enumerable.Range(1, 24).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
-                    </td>
-                    <td>
-                        MM:@Html.DropDownListFor(m => m.UserDOBTimeMM, Enumerable.Range(0, 59).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
-                    </td>
-                    <td>
-                        SS:@Html.DropDownListFor(m => m.UserDOBTimeSS, Enumerable.Range(0, 59).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Weight:
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(m => m.WeightMeasure);
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left" colspan="3">
-                        <input type="submit" id="PhysicalDetails" name="PhysicalDetails" value="Save and Next" />
-                        <input type="submit" id="Skip" name="Skip" value="Skip For Later" />
-                    </td>
-                </tr>
-            </table>
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserHeightFit, "Height in Fit", new { @class = "form-control" })
+            <div class="col-sm-6">
+                @Html.DropDownListFor(m => m.UserHeightFit, Enumerable.Range(1, 8).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(m => m.UserHeightInch, "Height in Fit", new { @class = "form-control" })
+            <div class="col-sm-6">
+                @Html.DropDownListFor(m => m.UserHeightInch, Enumerable.Range(0, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserBodyColourId, "Skin Complexion", new { @class = "form-control" })
+            <div class="col-sm-6">
+                @Html.DropDownListFor(m => m.UserBodyColourId, new SelectList(Model.listBodyColourId, "Key", "Value"), "Select...", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserDOBDD, "Date Of Birth", new { @class = "form-control" })
+            <div class="col-sm-6">
+                DD:@Html.DropDownListFor(m => m.UserDOBDD, Enumerable.Range(1, 31).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                MM:@Html.DropDownListFor(m => m.UserDOBMM, Enumerable.Range(1, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                YYYY:@Html.DropDownListFor(m => m.UserDOBYYYY, Enumerable.Range(DateTime.Now.Year - 60, 61).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserDOBTime, "Time Of Birth", new { @class = "form-control" })
+            <div class="col-sm-6">
+                HH:@Html.DropDownListFor(m => m.UserDOBTimeHH, Enumerable.Range(1, 24).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                MM:@Html.DropDownListFor(m => m.UserDOBTimeMM, Enumerable.Range(0, 59).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                SS:@Html.DropDownListFor(m => m.UserDOBTimeSS, Enumerable.Range(0, 59).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.WeightMeasure, "Weight", new { @class = "form-control" })
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.WeightMeasure)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-6">
+                <input type="submit" id="PhysicalDetails" name="PhysicalDetails" value="Save and Next" class="btn btn-default" />
+                <input type="submit" id="Skip" name="Skip" value="Skip For Later" class="btn btn-default" />
+            </div>
         </div>
     }
 }
