@@ -1,175 +1,97 @@
-﻿@using CompleteMVC.ViewModel
+@using CompleteMVC.ViewModel
 @model UserSignUpVM
-
 
 @section TitleSection{
     Primary Details
 }
 @section HeaderSection{
     <style>
-        /*table {
-            border: 1px solid Black;
-        }
-
-        tr {
-            border: 1px solid Black;
-        }
-
-        td {
-            border: 1px solid Black;
-        }
-
-        th {
-            border: 1px solid Black;
-        }*/
-
         .error {
             color: darkred;
         }
-    </style>
-    <script type="text/javascript">
-        function fileCheck(obj) {
-            var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
-            var myfileExtension = obj.value.split('.').pop();
-
-            if (fileExtension.indexOf(myfileExtension) == -1) {
-                alert("Only '.jpeg','.jpg', '.png', '.gif', '.bmp' formats are allowed.");
-            }
+        .widthForm {
+            width:65%;
         }
-    </script>
+    </style>
 }
 @section ContentBody{
-    @using (Html.BeginForm("SignUp", "UserRegistration"))
+    @using (Html.BeginForm("SignUp", "UserRegistration", new { @class = "form-inline" }))
     {
         if (Session["SignUpPageIndex"] == null)
         {
-            <div id="SignUp1">
-                <table>
-                    <tr>
-                        <td colspan="2">
-                            @Html.ValidationSummary(true, "", new { @class = "error" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>First Name:</td>
-                        <td>
-                            @Html.TextBoxFor(m => m.UserFirstName)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            @Html.ValidationMessageFor(m => m.UserFirstName, "", new { @class = "error" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Middle Name:</td>
-                        <td>
-                            @Html.TextBoxFor(m => m.UserMiddleName)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            @Html.ValidationMessageFor(m => m.UserMiddleName, "", new { @class = "error" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Last Name:</td>
-                        <td colspan="2">
-                            @Html.TextBoxFor(m => m.UserLastName)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            @Html.ValidationMessageFor(m => m.UserLastName, "", new { @class = "error" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Gender:</td>
-                        <td colspan="2">
-                            @Html.DropDownListFor(m => m.Gender, new SelectList(Model.listGender, "Key", "Value"), "Select...")
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "error" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Email:</td>
-                        <td>
-                            @Html.TextBoxFor(m => m.UserEmail)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            @Html.ValidationMessageFor(m => m.UserEmail, "", new { @class = "error" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Password:
-                        </td>
-                        <td>
-                            @Html.PasswordFor(m => m.UserPassword)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            @Html.ValidationMessageFor(m => m.UserPassword, "", new { @class = "error" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Confirm Password:
-                        </td>
-                        <td>
-                            @Html.PasswordFor(m => m.UserConfirmPassword)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            @Html.ValidationMessageFor(m => m.UserConfirmPassword, "", new { @class = "error" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Mobile Number:</td>
-                        <td>
-                            @Html.TextBoxFor(m => m.UserContact)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            @Html.ValidationMessageFor(m => m.UserContact, "", new { @class = "error" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="left" colspan="2">
-                            <input type="submit" id="SignUp1" name="SignUp1" value="Save and Next" />
-                        </td>
-                    </tr>
-                </table>
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserFirstName,"First Name",  new { @class = "control-label col-sm-2" })
+                <div class="col-sm-10">
+                    @Html.ValidationSummary(true, "", new { @class = "error" })
+                    @Html.TextBoxFor(m => m.UserFirstName, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserMiddleName,"Middle Name", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-10">
+                    @Html.ValidationSummary(true, "", new { @class = "error" })
+                    @Html.TextBoxFor(m => m.UserMiddleName, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserLastName,"Last Name",  new { @class = "control-label col-sm-2" })
+                <div class="col-sm-10">
+                    @Html.ValidationSummary(true, "", new { @class = "error" })
+                    @Html.TextBoxFor(m => m.UserLastName, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.Gender, new { @class = "control-label col-sm-2" })
+                <div class="col-sm-10">
+                    @Html.ValidationSummary(true, "", new { @class = "error" })
+                    @Html.DropDownListFor(m => m.Gender, new SelectList(Model.listGender, "Key", "Value"), "Select...", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserEmail,"Email Address", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-10">
+                    @Html.ValidationSummary(true, "", new { @class = "error" })
+                    @Html.TextBoxFor(m => m.UserEmail, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserPassword,"Password", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-10">
+                    @Html.ValidationSummary(true, "", new { @class = "error" })
+                    @Html.TextBoxFor(m => m.UserPassword, new { @class = "form-control" })
+                </div>
+            </div>
+            @*<div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserPassword,"Confirm Password",  new { @class = "control-label col-sm-2" })
+                <div class="col-sm-10">
+                    @Html.ValidationSummary(true, "", new { @class = "error" })
+                    @Html.PasswordFor(m => m.UserPassword, new { @class = "form-control" })
+                </div>
+            </div>*@
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserConfirmPassword, "Confirm Password", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-10">
+                    @Html.ValidationSummary(true, "", new { @class = "error" })
+                    @Html.PasswordFor(m => m.UserConfirmPassword, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserContact,"Contact Number", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-10">
+                    @Html.ValidationSummary(true, "", new { @class = "error" })
+                    @Html.TextBoxFor(m => m.UserContact, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" id="SignUp1" name="SignUp1" value="Save and Next" class="btn btn-default"/>
+                </div>
             </div>
         }
-        else if (Convert.ToInt32(Session["SignUpPageIndex"]) == 1)
-        {
-            <div id="SignUp2">
-                <table>
-                    <tr>
-                        <td><input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this);" /></td>
-                    </tr>
-                    <tr>
-                        <td align="left" colspan="2">
-                            <input type="submit" id="SignUp2" name="SignUp2" value="Save and Next" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        }
-        else if (Convert.ToInt32(Session["SignUpPageIndex"]) == 2)
-        {
-            <div id="SignUp3">
-            </div>
-        }
+    
     }
 }
-
