@@ -1,8 +1,6 @@
 
-
 @using CompleteMVC.ViewModel
 @model UserEducationDetailsVM
-
 
 @section TitleSection{
     Eduation and Carrer Section
@@ -13,17 +11,89 @@
             color: darkred;
         }
     </style>
-
     <script>
+
+        $(document).ready(function () {
+            var UserJobStatusVal = $('#UserJobStatus').val();
+
+            if (UserJobStatusVal == 1) {
+                $('#trJobcomapny').show();
+                $('#trJobField').show();
+                $('#trJobDesc').show();
+                $('#trDesignation').show();
+                $('#trCountry').show();
+                $('#trIncome').show();
+            }
+            else {
+                $('#trJobcomapny').hide();
+                $('#trJobField').hide();
+                $('#trJobDesc').hide();
+                $('#trDesignation').hide();
+                $('#trCountry').hide();
+                $('#trIncome').hide();
+            }
+
+            var UserJobCountryVal = $('#UserJobCountry').val();
+            if (UserJobCountryVal == "") {
+                $('#trState').hide();
+                $('#trCity').hide();
+            }
+            else {
+                $('#trState').show();
+            }
+
+            var UserJobStateVal = $('#UserJobState').val();
+            if (UserJobStateVal == "") {
+                $('#trCity').hide();
+            }
+            else {
+                $('#trCity').show();
+            }
+
+            var Id = $('#UserMaxQualificationClass').val();
+            if (Id == "") {
+                $("#trEducationField").hide();
+            }
+            else {
+                $("#trEducationField").show();
+            }
+        });
+
+        function EnableEmployment()
+        {
+            var UserJobStatusVal = $('#UserJobStatus').val();
+            
+            if (UserJobStatusVal == 1) {
+                $('#trJobcomapny').show();
+                $('#trJobField').show();
+                $('#trJobDesc').show();
+                $('#trDesignation').show();
+                $('#trCountry').show();
+                $('#trIncome').show();
+            }
+            else {
+                $('#trJobcomapny').hide();
+                $('#trJobField').hide();
+                $('#trJobDesc').hide();
+                $('#trDesignation').hide();
+                $('#trCountry').hide();
+                $('#trIncome').hide();
+            }
+        }
 
         function GetStatesList() {
 
             var Id = $('#UserJobCountry').val();
             if (Id == "") {
+                $("#trState").hide();
+                $("#trCity").hide();
                 var markupState = "<option value=''>Select State...</option>";
                 var markupCity = "<option value=''>Select City...</option>";
                 $("#UserJobState").html(markupState); // clear before appending new list
                 $("#UserJobCity").html(markupCity); // clear before appending new list
+            }
+            else {
+                $("#trState").show();
             }
 
             $.ajax({
@@ -48,9 +118,14 @@
 
             var StateId = $('#UserJobState').val();
             if (StateId == "") {
+                $("#trCity").hide();
                 var markup = "<option value=''>Select City...</option>";
                 $("#UserJobCity").html(markup); // clear before appending new list
             }
+            else {
+                $("#trCity").show();
+            }
+
             $.ajax({
                 url: '/UserRegistration/GetCities',
                 type: "POST",
@@ -76,8 +151,12 @@
 
             var Id = $('#UserMaxQualificationClass').val();
             if (Id == "") {
+                $("#trEducationField").hide();
                 var markup = "<option value=''>Select Education Field...</option>";
                 $("#UserEducationField").html(markup).show();
+            }
+            else {
+                $("#trEducationField").show();
             }
             $.ajax({
                 url: '/UserRegistration/GetEducationFields',
@@ -99,94 +178,92 @@
     </script>
 }
 @section ContentBody{
-    @using (Html.BeginForm("UserEducationDetails", "UserRegistration", FormMethod.Post, new { @class = "form-horizontal" }))
+    @using (Html.BeginForm("UserEducationDetails", "UserRegistration", FormMethod.Post))
     {
-
-        <div class="form-group widthForm">
-            @Html.LabelFor(m => m.UserMaxQualificationClass, "Maximum Qualification", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserMaxQualificationClass, new SelectList(Model.listQualificationClass, "Key", "Value"), "Select Qualification...", new { @onchange = "GetEducationField();", @class = "form-control" })
+        <div class = "form-horizontal">
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserMaxQualificationClass, "Maximum Qualification", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserMaxQualificationClass, new SelectList(Model.listQualificationClass, "Key", "Value"), "Select Qualification...", new { @onchange = "GetEducationField();", @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group widthForm">
-            @Html.LabelFor(m => m.UserEducationField, "Education Field", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserEducationField, new SelectList(ViewBag.EducationField, "Value", "Text"), "Select Education Field...", new { @class = "form-control" })
+            <div class="form-group widthForm" id="trEducationField">
+                @Html.LabelFor(m => m.UserEducationField, "Education Field", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserEducationField, new SelectList(ViewBag.EducationField, "Value", "Text"), "Select Education Field...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group widthForm">
-            @Html.LabelFor(m => m.UserEducationSchool, "Institute Name", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextBoxFor(m => m.UserEducationSchool, new { @class = "form-control" })
+            <div class="form-group widthForm" id="trSchool">
+                @Html.LabelFor(m => m.UserEducationSchool, "Institute Name", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.UserEducationSchool, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group widthForm">
-            @Html.LabelFor(m => m.UserJobStatus, "Employement Status", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserJobStatus, new List<SelectListItem>()
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserJobStatus, "Employement Status", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserJobStatus, new List<SelectListItem>()
                        {
                             new SelectListItem() { Text="Employed",Value= "1"},
                             new SelectListItem() { Text = "Not Employed", Value="2"},
-                       }, "Select...", new { @class = "form-control" })
+                       }, "Select...", new { @class = "form-control",@onchange= "EnableEmployment();" })
+                </div>
+            </div>
+            <div class="form-group widthForm" id="trJobcomapny">
+                @Html.LabelFor(m => m.UserJobCompany, "Company Name", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.UserJobCompany, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm" id="trJobField">
+                @Html.LabelFor(m => m.UserJobField, "Job Field", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserJobField, new SelectList(Model.listJobField, "Key", "Value", 1), "Select...", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm" id="trJobDesc">
+                @Html.LabelFor(m => m.UserJobDesc, "About Job", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextAreaFor(m => m.UserJobDesc, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm" id="trDesignation">
+                @Html.LabelFor(m => m.Designation, "Designation", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.Designation, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm" id="trCountry">
+                @Html.LabelFor(m => m.UserJobCountry, "Job Country", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserJobCountry, new SelectList(Model.listCountry, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList();", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm" id="trState">
+                @Html.LabelFor(m => m.UserJobState, "Job State", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserJobState, new SelectList(ViewBag.StateList, "Value", "Text"), "Select State...", new { @onchange = "GetCitiesList();", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm" id="trCity">
+                @Html.LabelFor(m => m.UserJobCity, "Job City", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserJobCity, new SelectList(ViewBag.CityList, "Value", "Text"), "Select City...", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm" id="trIncome">
+                @Html.LabelFor(m => m.UserJobCity, "Income", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserIncomeId, new SelectList(Model.listUserIncome, "Key", "Value"), "Select Income...", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-4 btn-group">
+                    <input type="submit" id="EducationDetails" name="EducationDetails" value="Save and Next" class="btn btn-primary" />
+                    <input type="submit" id="Skip" name="Skip" value="Skip For Later" class="btn btn-primary" />
+                </div>
             </div>
         </div>
-        <div class="form-group widthForm">
-            @Html.LabelFor(m => m.UserJobCompany, "Company Name", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextBoxFor(m => m.UserJobCompany, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group widthForm">
-            @Html.LabelFor(m => m.UserJobField, "Job Field", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserJobField, new SelectList(Model.listJobField, "Key", "Value", 1), "Select...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group widthForm">
-            @Html.LabelFor(m => m.UserJobDesc, "About Job", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextAreaFor(m => m.UserJobDesc, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group widthForm">
-            @Html.LabelFor(m => m.Designation, "Designation", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextBoxFor(m => m.Designation)
-            </div>
-        </div>
-        <div class="form-group widthForm">
-            @Html.LabelFor(m => m.UserJobCountry, "Job Country", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserJobCountry, new SelectList(Model.listCountry, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList();", @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group widthForm">
-            @Html.LabelFor(m => m.UserJobState, "Job State", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserJobState, new SelectList(ViewBag.StateList, "Value", "Text"), "Select State...", new { @onchange = "GetCitiesList();", @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group widthForm">
-            @Html.LabelFor(m => m.UserJobCity, "Job City", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserJobCity, new SelectList(ViewBag.CityList, "Value", "Text"), "Select City...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group widthForm">
-            @Html.LabelFor(m => m.UserJobCity, "Income", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserIncomeId, new SelectList(Model.listUserIncome, "Key", "Value"), "Select Income...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-6">
-                <input type="submit" id="EducationDetails" name="EducationDetails" value="Save and Next" class="btn btn-default" />
-                <input type="submit" id="Skip" name="Skip" value="Skip For Later" class="btn btn-default" />
-            </div>
-        </div>
-
     }
 }
-
-
 
