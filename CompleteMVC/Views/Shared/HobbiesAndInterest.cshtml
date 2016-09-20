@@ -1,6 +1,5 @@
 @using CompleteMVC.ViewModel
 @model HobbiesAndInterestsVM
-
 @section TitleSection{
     Hobbies And Interest Section
 }
@@ -12,7 +11,7 @@
     </style>
     <script>
         $(document).ready(function () {
-            debugger;
+           
             var isVegetarianValue = $('#isVegetarian').val();
 
             if (isVegetarianValue == 1) {
@@ -42,7 +41,6 @@
         }
 
         function EnableEggetarian() {
-            debugger;
             var isVegetarianValue = $('#isVegetarian').val();
 
             if (isVegetarianValue == 1) {
@@ -57,72 +55,73 @@
 @section ContentBody{
     @using (Html.BeginForm("UserHobbiesAndInterest", "UserRegistration", FormMethod.Post))
     {
-        <div class="form-group">
-            @Html.LabelFor(m => m.HobbiesName, "Hobbies Name", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextAreaFor(m => m.HobbiesName, new { @class = "form-control" })
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(m => m.HobbiesName, "Hobbies Name", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextAreaFor(m => m.HobbiesName, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.FoodFondOf, "Foods you Like", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextAreaFor(m => m.FoodFondOf, new { @class = "form-control" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.FoodFondOf, "Foods you Like", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextAreaFor(m => m.FoodFondOf, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.FoodCanCook, "Cooking", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.FoodCanCook, new SelectList(Model.ListYesNo, "Key", "Value", 0), "Select...", new { @onchange = "EnableCookingItemRow('FoodCanCook', 'trCookingItems');", @class = "form-control" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.FoodCanCook, "Cooking", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.FoodCanCook, new SelectList(Model.ListYesNo, "Key", "Value", 0), "Select...", new { @onchange = "EnableCookingItemRow('FoodCanCook', 'trCookingItems');", @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.FoodAbletoCook, "Food You Can Cook", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextAreaFor(m => m.FoodAbletoCook)
+            <div class="form-group">
+                @Html.LabelFor(m => m.FoodAbletoCook, "Food You Can Cook", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextAreaFor(m => m.FoodAbletoCook, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.FavoriteBooks, "Favorite Books", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextAreaFor(m => m.FavoriteBooks, new { @class = "form-control" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.FavoriteBooks, "Favorite Books", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextAreaFor(m => m.FavoriteBooks, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.FavoriteBooks, "Favorite TV Shows", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextAreaFor(m => m.FavoriteTVShow, new { @class = "form-control" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.FavoriteBooks, "Favorite TV Shows", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextAreaFor(m => m.FavoriteTVShow, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.isVegetarian, "Food Habbit", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.isVegetarian, new SelectList(Model.ListFoodHabbits, "key", "Value", 1), "Select Food Habbits...", new { @onchange = "EnableEggetarian();", @class = "form-control" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.isVegetarian, "Food Habbit", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.isVegetarian, new SelectList(Model.ListFoodHabbits, "key", "Value", 1), "Select Food Habbits...", new { @onchange = "EnableEggetarian();", @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.isEggetarian, "Eggetarian?", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.isEggetarian, new SelectList(Model.ListYesNo, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+            <div class="form-group" id="trEggetarian">
+                @Html.LabelFor(m => m.isEggetarian, "Eggetarian?", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.isEggetarian, new SelectList(Model.ListYesNo, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.isSmoke, "Eggetarian?", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.isSmoke, new SelectList(Model.ListHabbitsType, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.isSmoke, "Smoking?", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.isSmoke, new SelectList(Model.ListHabbitsType, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.isDrink, "Eggetarian?", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.isDrink, new SelectList(Model.ListHabbitsType, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.isDrink, "Drinking?", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.isDrink, new SelectList(Model.ListHabbitsType, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-6">
-                <input type="submit" id="Hobbies" name="Hobbies" value="Save and Next" class="btn btn-default" />
-                <input type="submit" id="Skip" name="Skip" value="Skip For Later" class="btn btn-default" />
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-4 btn-group">
+                    <input type="submit" id="Hobbies" name="Hobbies" value="Save and Next" class="btn btn-primary" />
+                    <input type="submit" id="Skip" name="Skip" value="Skip For Later" class="btn btn-primary" />
+                </div>
             </div>
         </div>
     }
 }
-
