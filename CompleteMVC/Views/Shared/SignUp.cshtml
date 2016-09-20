@@ -1,6 +1,5 @@
 @using CompleteMVC.ViewModel
 @model UserSignUpVM
-
 @section TitleSection{
     Primary Details
 }
@@ -9,82 +8,88 @@
         .error {
             color: darkred;
         }
+
         .widthForm {
-            width:70%;
+            width: 70%;
         }
     </style>
 }
 @section ContentBody{
-    @using (Html.BeginForm("SignUp", "UserRegistration", new { @class = "form-inline" }))
+    @using (Html.BeginForm("SignUp", "UserRegistration"))
     {
         if (Session["SignUpPageIndex"] == null)
-        {
-            <div class="form-group widthForm">
-                @Html.LabelFor(m => m.UserFirstName,"First Name",  new { @class = "control-label col-sm-2" })
-                <div class="col-sm-10">
-                    @Html.ValidationSummary(true, "", new { @class = "error" })
-                    @Html.TextBoxFor(m => m.UserFirstName, new { @class = "form-control" })
+        {<fieldset>
+            <legend>Sign Up</legend>
+            <div class="form-inline">
+                <div class="form-group widthForm">
+                    @Html.LabelFor(m => m.UserFirstName, "First Name", new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-4">
+                        @Html.ValidationSummary(true, "", new { @class = "error" })
+                        @Html.TextBoxFor(m => m.UserFirstName, new { @class = "form-control" })
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group widthForm">
-                @Html.LabelFor(m => m.UserMiddleName,"Middle Name", new { @class = "control-label col-sm-2" })
-                <div class="col-sm-10">
-                    @Html.ValidationSummary(true, "", new { @class = "error" })
-                    @Html.TextBoxFor(m => m.UserMiddleName, new { @class = "form-control" })
+                <div class="form-group widthForm">
+                    @Html.LabelFor(m => m.UserMiddleName, "Middle Name", new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-4">
+                        @Html.ValidationSummary(true, "", new { @class = "error" })
+                        @Html.TextBoxFor(m => m.UserMiddleName, new { @class = "form-control" })
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group widthForm">
-                @Html.LabelFor(m => m.UserLastName,"Last Name",  new { @class = "control-label col-sm-2" })
-                <div class="col-sm-10">
-                    @Html.ValidationSummary(true, "", new { @class = "error" })
-                    @Html.TextBoxFor(m => m.UserLastName, new { @class = "form-control" })
+                <div class="form-group widthForm">
+                    @Html.LabelFor(m => m.UserLastName, "Last Name", new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-4">
+                        @Html.ValidationSummary(true, "", new { @class = "error" })
+                        @Html.TextBoxFor(m => m.UserLastName, new { @class = "form-control" })
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group widthForm">
-                @Html.LabelFor(m => m.Gender, new { @class = "control-label col-sm-2" })
-                <div class="col-sm-10">
-                    @Html.ValidationSummary(true, "", new { @class = "error" })
-                    @Html.DropDownListFor(m => m.Gender, new SelectList(Model.listGender, "Key", "Value"), "Select...", new { @class = "form-control" })
+                <div class="form-group widthForm">
+                    @Html.LabelFor(m => m.Gender, new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-4">
+                        @Html.ValidationSummary(true, "", new { @class = "error" })
+                        @Html.DropDownListFor(m => m.Gender, new SelectList(Model.listGender, "Key", "Value"), "Select...", new { @class = "form-control" })
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group widthForm">
-                @Html.LabelFor(m => m.UserEmail,"Email Address", new { @class = "control-label col-sm-2" })
-                <div class="col-sm-10">
-                    @Html.ValidationSummary(true, "", new { @class = "error" })
-                    @Html.TextBoxFor(m => m.UserEmail, new { @class = "form-control" })
+                <div class="form-group widthForm">
+                    @Html.LabelFor(m => m.UserEmail, "Email Address", new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-4">
+                        @Html.ValidationSummary(true, "", new { @class = "error" })
+                        @Html.TextBoxFor(m => m.UserEmail, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group widthForm">
+                    @Html.LabelFor(m => m.UserPassword, "Password", new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-4">
+                        @Html.ValidationSummary(true, "", new { @class = "error" })
+                        @Html.PasswordFor(m => m.UserPassword, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group widthForm">
+                    @Html.LabelFor(m => m.UserConfirmPassword, "Confirm Password", new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-4">
+                        @Html.ValidationSummary(true, "", new { @class = "error" })
+                        @Html.PasswordFor(m => m.UserConfirmPassword, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group widthForm">
+                    @Html.LabelFor(m => m.UserContact, "Contact Number", new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-4">
+                        @Html.ValidationSummary(true, "", new { @class = "error" })
+                        @Html.TextBoxFor(m => m.UserContact, new { @class = "form-control" })
+                    </div>
+                </div>
+                <br /><br />
+                <div class="form-group widthForm">
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <input type="submit" id="SignUp1" name="SignUp1" value="Save and Next" class="btn btn-primary" />
+                    </div>
                 </div>
             </div>
-            <div class="form-group widthForm">
-                @Html.LabelFor(m => m.UserPassword,"Password", new { @class = "control-label col-sm-2" })
-                <div class="col-sm-10">
-                    @Html.ValidationSummary(true, "", new { @class = "error" })
-                    @Html.PasswordFor(m => m.UserPassword, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group widthForm">
-                @Html.LabelFor(m => m.UserConfirmPassword, "Confirm Password", new { @class = "control-label col-sm-2" })
-                <div class="col-sm-10">
-                    @Html.ValidationSummary(true, "", new { @class = "error" })
-                    @Html.PasswordFor(m => m.UserConfirmPassword, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group widthForm">
-                @Html.LabelFor(m => m.UserContact,"Contact Number", new { @class = "control-label col-sm-2" })
-                <div class="col-sm-10">
-                    @Html.ValidationSummary(true, "", new { @class = "error" })
-                    @Html.TextBoxFor(m => m.UserContact, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group widthForm">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <input type="submit" id="SignUp1" name="SignUp1" value="Save and Next" class="btn btn-default"/>
-                </div>
-            </div>
+        </fieldset>
         }
-    
+
     }
 }
