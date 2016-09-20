@@ -1,52 +1,97 @@
 
 @using CompleteMVC.ViewModel
 @model UserSocialDetailsVM
-
 @section TitleSection{
     UserPhysicalDetails
 }
 @section HeaderSection{
     <style>
-        table {
-            border: 1px solid Black;
-        }
-
-        tr {
-            border: 1px solid Black;
-        }
-
-        td {
-            border: 1px solid Black;
-        }
-
-        th {
-            border: 1px solid Black;
-        }
-
         .error {
             color: darkred;
         }
 
-        .JobFieldHide {
-            display: none;
-        }
-
-        .JobFieldShow {
-            visibility: visible;
+        .widthForm {
+            width: 70%;
         }
     </style>
     <script>
 
-        function GetStatesList(sourcecontrolname, destcontrolname, cityControlName) {
+        $(document).ready(function () {
+          
+            var UserLivingCountryValue = $('#UserLivingCountryId').val();
+            if (UserLivingCountryValue == "") {
+                $('#trUserState').hide();
+                $('#trUserCity').hide();
+            }
+            else {
+                $('#trUserState').show();
+            }
+
+            var UserLivingStateValue = $('#UserLivingStateId').val();
+            if (UserLivingStateValue == "") {
+                $('#trUserCity').hide();
+            }
+            else {
+                $('#trUserCity').show();
+            }
+
+
+            var FamilyResidingCountryValue = $('#FamilyResidingCountryId').val();
+            if (FamilyResidingCountryValue == "") {
+                $('#trFamilyState').hide();
+                $('#trFamilyCity').hide();
+            }
+            else {
+                $('#trFamilyState').show();
+            }
+
+            var FamilyResidingStateValue = $('#FamilyResidingStateId').val();
+            if (FamilyResidingStateValue == "") {
+                $('#trFamilyCity').hide();
+            }
+            else {
+                $('#trFamilyCity').show();
+            }
+
+            var ReligionValue = $('#UserReligionId').val();
+            if (ReligionValue =="") {
+                $('#trCaste').hide();
+                $('#trSubcaste').hide();
+            }
+            else {
+                $('#trCaste').show();
+            }
+
+            var CasteValue = $('#UserCasteId').val();
+            if (CasteValue=="") {
+                $('#trSubcaste').hide();
+            }
+            else {
+                $('#trSubcaste').show();
+            }
+
+        });
+
+
+        function GetStatesList(sourcecontrolname, destcontrolname, cityControlName, trStateName, trCityName) {
+          
             var sourcecontolId = '#' + sourcecontrolname;
             var destControlId = '#' + destcontrolname;
             var cityControlId = '#' + cityControlName;
+            var trStateId = '#' + trStateName;
+            var trCityId = '#' + trCityName;
+
             var Id = $(sourcecontolId).val();
             if (Id == "") {
+                $(trStateId).hide();
+                $(trCityId).hide();
                 var markupState = "<option value=''>Select State...</option>";
                 var markupCity = "<option value=''>Select City...</option>";
                 $(destControlId).html(markupState); // clear before appending new list
                 $(cityControlId).html(markupCity); // clear before appending new list
+            }
+            else {
+                $(trStateId).show();
             }
 
             $.ajax({
@@ -84,14 +129,19 @@
             }
         });
 
-        function GetCitiesList(sourcecontrolname, destcontrolname) {
+        function GetCitiesList(sourcecontrolname, destcontrolname, trCityName) {
             var sourcecontolId = '#' + sourcecontrolname;
             var destControlId = '#' + destcontrolname;
             var StateId = $(sourcecontolId).val();
-
+            var trCityId = '#' + trCityName;
+            debugger;
             if (StateId == "") {
+                $(trCityId).hide();
                 var markup = "<option value=''>Select City...</option>";
                 $(destControlId).html(markup); // clear before appending new list
+            }
+            else {
+                $(trCityId).show();
             }
 
             $.ajax({
@@ -119,10 +169,15 @@
 
             var Id = $('#UserReligionId').val();
             if (Id == "") {
+                $("#trCaste").hide();
+                $("#trSubcaste").hide();
                 var markupCaste = "<option value=''>Select Caste...</option>";
                 $("#UserCasteId").html(markupCaste).show();
                 var markupSubCaste = "<option value=''>Select SubCaste...</option>";
                 $("#UserSubCasteId").html(markupSubCaste).show();
+            }
+            else {
+                $("#trCaste").show();
             }
 
             $.ajax({
@@ -147,8 +202,12 @@
             var Id = $('#UserCasteId').val();
 
             if (Id == "") {
+                $("#trSubcaste").hide();
                 var markup = "<option value=''>Select SubCaste...</option>";
                 $("#UserSubCasteId").html(markup).show();
+            }
+            else {
+                $("#trSubcaste").show();
             }
 
             $.ajax({
@@ -175,7 +234,6 @@
             var tdControlId = '#' + tdControl;
             var Id = $(sourceControlId).val();
 
-            //  $(controltoShowId).addClass("JobFieldShow");
             if (Id == 1) {
                 $(tdControlId).show();
                 $.ajax({
@@ -203,185 +261,173 @@
 @section ContentBody{
     @using (Html.BeginForm("UserSocialDetails", "UserRegistration"))
     {
-        <div class="form-group">
-            @Html.LabelFor(m => m.UserReligionId, "Religion", new { @class="form-control"})
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserReligionId, new SelectList(Model.listReligion, "Key", "Value", 0), "Select Religion...", new { @onchange = "GetCasteList();", @class = "form-control" })
+        <div class="form-horizontal">
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserReligionId, "Religion", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserReligionId, new SelectList(Model.listReligion, "Key", "Value", 0), "Select Religion...", new { @onchange = "GetCasteList();", @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.UserCasteId, "Caste", new { @class = "form-control" })
-            <div  class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserCasteId, new SelectList(ViewBag.CasteList, "Value", "Text"), "Select Caste...", new { @onchange = "GetSubCasteList();", @class = "form-control" })
+            <div class="form-group widthForm" id="trCaste">
+                @Html.LabelFor(m => m.UserCasteId, "Caste", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserCasteId, new SelectList(ViewBag.CasteList, "Value", "Text"), "Select Caste...", new { @onchange = "GetSubCasteList();", @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.UserSubCasteId, "Sub Caste", new { @class = "form-control" })
-            <div  class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserSubCasteId, new SelectList(ViewBag.SubCasteList, "Value", "Text"), "Select SubCaste...", new { @class = "form-control" })
+            <div class="form-group widthForm" id="trSubcaste">
+                @Html.LabelFor(m => m.UserSubCasteId, "Sub Caste", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserSubCasteId, new SelectList(ViewBag.SubCasteList, "Value", "Text"), "Select SubCaste...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.RashiId, "Rashi", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.RashiId, new SelectList(Model.listRashi, "Key", "Value", 0), "Select Rashi...", new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserLivingCountryId, "Country", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserLivingCountryId, new SelectList(Model.listLivingCountryId, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('UserLivingCountryId','UserLivingStateId', 'UserLivingCityId','trUserState', 'trUserCity');", @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.GotraName, "Gotra", new { @class = "form-control" })
-            <div class="col-sm-6">
-               @Html.TextBoxFor(m => m.GotraName, new { @class = "form-control" })
+            <div class="form-group widthForm" id="trUserState">
+                @Html.LabelFor(m => m.UserLivingStateId, "State", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserLivingStateId, new SelectList(ViewBag.LivingStateList, "Value", "Text"), "Select State...", new { @onchange = "GetCitiesList('UserLivingStateId', 'UserLivingCityId', 'trUserCity');", @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.UserLivingCountryId, "Country", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserLivingCountryId, new SelectList(Model.listLivingCountryId, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('UserLivingCountryId','UserLivingStateId', 'UserLivingCityId');", @class = "form-control" })
+            <div class="form-group widthForm" id="trUserCity">
+                @Html.LabelFor(m => m.UserLivingCityId, "City", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.UserLivingCityId, new SelectList(ViewBag.LivingCityList, "Value", "Text"), "Select City...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.UserLivingStateId, "State", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserLivingStateId, new SelectList(ViewBag.LivingStateList, "Value", "Text"), "Select State...", new { @onchange = "GetCitiesList('UserLivingStateId', 'UserLivingCityId');" , @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserLivingZipCode, "Zip Code", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.UserLivingZipCode, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.UserLivingCityId, "City", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserLivingCityId, new SelectList(ViewBag.LivingCityList, "Value", "Text"), "Select City...", new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserCompleteAddress, "Complete Address", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextAreaFor(m => m.UserCompleteAddress, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.UserLivingZipCode, "Zip Code", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextBoxFor(m => m.UserLivingZipCode, new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.RashiId, "Rashi", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.RashiId, new SelectList(Model.listRashi, "Key", "Value", 0), "Select Rashi...", new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(m => m.GotraName, "Gotra", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.GotraName, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.UserCompleteAddress, "Complete Address", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextAreaFor(m => m.UserCompleteAddress, new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.AboutYou, "About You", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextAreaFor(m => m.AboutYou, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.AboutYou, "About You", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextAreaFor(m => m.AboutYou, new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.LanguageKnown, "Language Known", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.LanguageKnown, new SelectList(Model.ListLanguages, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(m => m.DressingStyle, "Dressing Style", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.DressingStyle, new SelectList(Model.ListDressingStyle, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.LanguageKnown, "Language Known", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.LanguageKnown, new SelectList(Model.ListLanguages, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.NoOfBrothers, "No Of Brothers", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.NoOfBrothers, new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(m => m.NoOfSisters, "No Of Sisters", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.NoOfSisters, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.DressingStyle, "Dressing Style", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.DressingStyle, new SelectList(Model.ListDressingStyle, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.NoOfBrothersMarried, "Brothers Married", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.NoOfBrothersMarried, new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(m => m.NoOfSistersMarried, "Sisters Married", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.NoOfSistersMarried, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.AboutFamily, "About Family", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextAreaFor(m => m.AboutFamily, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.NoOfBrothers, "No Of Brothers", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextBoxFor(m => m.NoOfBrothers, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.NoOfSisters, "No Of Sisters", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextBoxFor(m => m.NoOfSisters, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.NoOfBrothersMarried, "Brothers Married", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextBoxFor(m => m.NoOfBrothersMarried, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.NoOfSistersMarried, "Sisters Married", new { @class = "form-control" })
-            <div class="col-sm-6">
-               @Html.TextBoxFor(m => m.NoOfSistersMarried, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.FamilyIncomeId, "Family Income", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.FamilyIncomeId, new SelectList(Model.listFamilyIncome, "Key", "Value"), "Select Income...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.IsJointFamily, "Family Joint?", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.IsJointFamily, new List<SelectListItem>()
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.IsJointFamily, "Family Joint?", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.IsJointFamily, new List<SelectListItem>()
                          {
                             new SelectListItem() { Text="No",Value= "false"},
                             new SelectListItem() { Text = "Yes", Value="true"},
                        }, "Select...", new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(m => m.FamilyIncomeId, "Family Income", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.FamilyIncomeId, new SelectList(Model.listFamilyIncome, "Key", "Value"), "Select Income...", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.FamilyResidingCountryId, "Family Residing Country", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.FamilyResidingCountryId, new SelectList(Model.listFamilyResidingCountry, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('FamilyResidingCountryId', 'FamilyResidingStateId', 'FamilyResidingCityId', 'trFamilyState', 'trFamilyCity');", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm" id="trFamilyState">
+                @Html.LabelFor(m => m.FamilyResidingStateId, "Family Residing State", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.FamilyResidingStateId, new SelectList(ViewBag.FamilyResidingStateList, "Value", "Text"), "Select State...", new { @onchange = "GetCitiesList('FamilyResidingStateId', 'FamilyResidingCityId','trFamilyCity');", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm" id="trFamilyCity">
+                @Html.LabelFor(m => m.FamilyResidingCityId, "Family Residing City", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.FamilyResidingCityId, new SelectList(ViewBag.FamilyResidingCityList, "Value", "Text"), "Select City...", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.FatherWorkingStatus, "Father Working Status", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.FatherWorkingStatus, new SelectList(Model.ListYesNo, "Key", "Value", 0), "Select...", new { @onchange = "GetJobField('FatherWorkingStatus','FatherOccupation', 'JobFieldFather');", @class = "form-control" })
+                </div>
+                @Html.LabelFor(m => m.MotherWorkingStatus, "Mother Working Status", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MotherWorkingStatus, new SelectList(Model.ListYesNo, "Key", "Value", 0), "Select...", new { @onchange = "GetJobField('MotherWorkingStatus','MotherOccupation', 'JobFieldMother');", @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm" id="JobFieldFather">
+                @Html.LabelFor(m => m.FatherOccupation, "Father Job Field", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.FatherOccupation, new SelectList(ViewBag.JobFieldList, "Value", "Text"), "Select Occupation...", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm" id="JobFieldMother">
+                @Html.LabelFor(m => m.MotherOccupation, "Mother Job Field", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MotherOccupation, new SelectList(ViewBag.JobFieldList, "Value", "Text", 1), "Select Occupation...", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.ProfileManager, "Profile Managed By", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.ProfileManager, new SelectList(Model.ListProfileManager, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.AboutFamily, "About Family", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextAreaFor(m => m.AboutFamily, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm">
+                <div class="col-sm-offset-2 col-sm-4 btn-group">
+                    <input type="submit" id="SocialDetails" name="SocialDetails" value="Save and Next" class="btn btn-primary" />
+                    <input type="submit" id="Skip" name="Skip" value="Skip For Later" class="btn btn-primary" />
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.FamilyResidingCountryId, "Family Residing Country", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.FamilyResidingCountryId, new SelectList(Model.listFamilyResidingCountry, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('FamilyResidingCountryId', 'FamilyResidingStateId', 'FamilyResidingCityId');", @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.FamilyResidingStateId, "Family Residing State", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.FamilyResidingStateId, new SelectList(ViewBag.FamilyResidingStateList, "Value", "Text"), "Select State...", new { @onchange = "GetCitiesList('FamilyResidingStateId', 'FamilyResidingCityId');", @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.FamilyResidingCityId, "Family Residing City", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.FamilyResidingCityId, new SelectList(ViewBag.FamilyResidingCityList, "Value", "Text"), "Select City...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.FatherWorkingStatus, "Father Working Status", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.FatherWorkingStatus, new SelectList(Model.ListYesNo, "Key", "Value", 0), "Select...", new { @onchange = "GetJobField('FatherWorkingStatus','FatherOccupation', 'JobFieldFather');", @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.FatherOccupation, "Father Job Field", new { @class = "form-control" })
-            <div class="col-sm-6" id="JobFieldFather">
-                @Html.DropDownListFor(m => m.FatherOccupation, new SelectList(ViewBag.JobFieldList, "Value", "Text"), "Select Occupation...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MotherWorkingStatus, "Mother Working Status", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MotherWorkingStatus, new SelectList(Model.ListYesNo, "Key", "Value", 0), "Select...", new { @onchange = "GetJobField('MotherWorkingStatus','MotherOccupation', 'JobFieldMother');", @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MotherOccupation, "Mother Job Field", new { @class = "form-control" })
-            <div class="col-sm-6" id="JobFieldMother">
-              @Html.DropDownListFor(m => m.MotherOccupation, new SelectList(ViewBag.JobFieldList, "Value", "Text", 1), "Select Occupation...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.ProfileManager, "Profile Managed By", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.ProfileManager, new SelectList(Model.ListProfileManager, "Key", "Value", 0), "Select...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <input type="submit" id="SocialDetails" name="SocialDetails" value="Save and Next" class="btn btn-default" />
-                <input type="submit" id="Skip" name="Skip" value="Skip For Later" class="btn btn-default" />
-            </div>
-        </div>
-
     }
 }
-
