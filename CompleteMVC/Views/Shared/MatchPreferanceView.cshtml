@@ -1,45 +1,76 @@
-﻿
 
 @using CompleteMVC.ViewModel
 @model MatchPreferanceVM
-
 
 @section TitleSection{
     Required Match Preferance
 }
 @section HeaderSection{
     <style>
-        /*table {
-            border: 1px solid Black;
-        }
-
-        tr {
-            border: 1px solid Black;
-        }
-
-        td {
-            border: 1px solid Black;
-        }
-
-        th {
-            border: 1px solid Black;
-        }*/
-
         .error {
             color: darkred;
         }
+
+        .widthForm {
+            width: 70%;
+        }
     </style>
     <script>
-        function GetStatesList(sourcecontrolname, destcontrolname, cityControlName) {
+        $(document).ready(function () {
+           
+            var CountryValue = $('#MatchCountry').val();
+            if (CountryValue == "") {
+                $('#trState').hide();
+                $('#trCity').hide();
+            }
+            else {
+                $('#trState').show();
+            }
+
+            var StateValue = $('#MatchState').val();
+            if (StateValue == "") {
+                $('#trCity').hide();
+            }
+            else {
+                $('#trCity').show();
+            }
+
+            var ReligionValue = $('#MatchReligion').val();
+            if (ReligionValue == "") {
+                $('#trCaste').hide();
+                $('#trSubcaste').hide();
+            }
+            else {
+                $('#trCaste').show();
+            }
+
+            var CasteValue = $('#MatchCaste').val();
+            if (CasteValue == "") {
+                $('#trSubcaste').hide();
+            }
+            else {
+                $('#trSubcaste').show();
+            }
+        });
+
+        function GetStatesList(sourcecontrolname, destcontrolname, cityControlName, trStateName, trCityName) {
             var sourcecontolId = '#' + sourcecontrolname;
             var destControlId = '#' + destcontrolname;
             var cityControlId = '#' + cityControlName;
+            var stateId = '#' + trStateName;
+            var cityId = '#' + trCityName;
+
             var Id = $(sourcecontolId).val();
             if (Id == "") {
                 var markupSate = "<option value=''>Select State...</option>";
                 $(destControlId).html(markupSate).show();
                 var markupCity = "<option value=''>Select City...</option>";
                 $(cityControlId).html(markupCity).show();
+                $('#trState').hide();
+                $('#trCity').hide();
+            }
+            else {
+                $('#trState').show();
             }
             $.ajax({
                 url: '/UserRegistration/GetStates',
@@ -59,13 +90,19 @@
             });
         }
 
-        function GetCitiesList(sourcecontrolname, destcontrolname) {
+        function GetCitiesList(sourcecontrolname, destcontrolname, trCityName) {
             var sourcecontolId = '#' + sourcecontrolname;
             var destControlId = '#' + destcontrolname;
             var StateId = $(sourcecontolId).val();
+            var trCityId = '#' + trCityName;
+
             if (StateId == "") {
                 var markup = "<option value=''>Select City...</option>";
                 $(destControlId).html(markup).show();
+                $('#trCity').hide();
+            }
+            else {
+                $('#trCity').show();
             }
             $.ajax({
                 url: '/UserRegistration/GetCities',
@@ -113,7 +150,7 @@
         }
 
         $(document).ready(function () {
-            debugger;
+
             var isVegetarianValue = $('#MatchFoodHabbit').val();
 
             if (isVegetarianValue == 1) {
@@ -126,7 +163,7 @@
         });
 
         function EnableEggetarian() {
-            debugger;
+
             var isVegetarianValue = $('#MatchFoodHabbit').val();
 
             if (isVegetarianValue == 1) {
@@ -145,6 +182,11 @@
                 $("#MatchCaste").html(markupCaste).show();
                 var markupSubCaste = "<option value=''>Select SubCaste...</option>";
                 $("#MatchSubCaste").html(markupSubCaste).show();
+                $('#trCaste').hide();
+                $('#trSubcaste').hide();
+            }
+            else {
+                $('#trCaste').show();
             }
             $.ajax({
                 url: '/UserRegistration/GetCastesList',
@@ -164,8 +206,14 @@
             });
         }
         function GetSubCasteList() {
-
+           
             var Id = $('#MatchCaste').val();
+            if (Id="") {
+                $('#trSubcaste').hide();
+            }
+            else {
+                $('#trSubcaste').show();
+            }
             $.ajax({
                 url: '/UserRegistration/GetSubCastesList',
                 type: "POST",
@@ -189,168 +237,165 @@
 @section ContentBody{
     @using (Html.BeginForm("UserMatchPreferance", "UserRegistration"))
     {
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchHeightFitFrom, "Height From", new { @class = "form-control" })
-            <div class="col-sm-6">
-                Fit:@Html.DropDownListFor(m => m.MatchHeightFitFrom, Enumerable.Range(1, 8).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
-                Inch:@Html.DropDownListFor(m => m.MatchHeightInchFrom, Enumerable.Range(0, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+        <div class="form-horizontal">
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.MatchHeightFitFrom, "Height From", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-2">
+                    Fit:@Html.DropDownListFor(m => m.MatchHeightFitFrom, Enumerable.Range(1, 8).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    Inch:@Html.DropDownListFor(m => m.MatchHeightInchFrom, Enumerable.Range(0, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(m => m.MatchHeightFitTo, "Height Till", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-2">
+                    Fit:@Html.DropDownListFor(m => m.MatchHeightFitTo, Enumerable.Range(1, 8).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    Inch:@Html.DropDownListFor(m => m.MatchHeightInchTo, Enumerable.Range(0, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchHeightFitTo, "Height Till", new { @class = "form-control" })
-            <div class="col-sm-6">
-                Fit:@Html.DropDownListFor(m => m.MatchHeightFitTo, Enumerable.Range(1, 8).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
-                Inch:@Html.DropDownListFor(m => m.MatchHeightInchTo, Enumerable.Range(0, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.MatchHeightFitFrom, "Age", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-2">
+                    From:@Html.DropDownListFor(m => m.MatchAgeRangeFrom, Enumerable.Range(0, 60).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    To:@Html.DropDownListFor(m => m.MatchAgeRangeTo, Enumerable.Range(0, 60).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
+               
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchHeightFitFrom, "Age", new { @class = "form-control" })
-            <div class="col-sm-6">
-                From:@Html.DropDownListFor(m => m.MatchAgeRangeFrom, Enumerable.Range(0, 60).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
-                To:@Html.DropDownListFor(m => m.MatchAgeRangeTo, Enumerable.Range(0, 60).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.MatchCountry, "Country", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchCountry, new SelectList(Model.listMatchCountry, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('MatchCountry','MatchState', 'MatchCity','trState', 'trCity');", @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchCountry, "Country", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchCountry, new SelectList(Model.listMatchCountry, "Key", "Value", 0), "Select...", new { @onchange = "GetStatesList('MatchCountry','MatchState', 'MatchCity');" })
+            <div class="form-group widthForm" id="trState">
+                @Html.LabelFor(m => m.MatchState, "State", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchState, new SelectList(ViewBag.LivingStateList, "Value", "Text"), "Select State...", new { @onchange = "GetCitiesList('MatchState', 'MatchCity', 'trCity');", @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchState, "State", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchState, new SelectList(ViewBag.LivingStateList, "Value", "Text"), "Select State...", new { @onchange = "GetCitiesList('MatchState', 'MatchCity');" })
+            <div class="form-group widthForm" id="trCity">
+                @Html.LabelFor(m => m.MatchCity, "City", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchCity, new SelectList(ViewBag.LivingCityList, "Value", "Text"), "Select City...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchCity, "City", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchCity, new SelectList(ViewBag.LivingCityList, "Value", "Text"), "Select City...", new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.MatchReligion, "Religion", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchReligion, new SelectList(Model.listMatchReligion, "Key", "Value", 0), "Select Religion...", new { @class = "form-control", @onchange = "GetCasteList();" })
+                </div>
+                @Html.LabelFor(m => m.GotraName, "Gotra Name", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.GotraName, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchMarritalStatus, "Marrital Status", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchMarritalStatus, new SelectList(Model.listMarritalStatus, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+            <div class="form-group widthForm" id="trCaste">
+                @Html.LabelFor(m => m.MatchCaste, "Caste", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchCaste, new SelectList(ViewBag.MatchCasteList, "Value", "Text"), "Select Caste...", new { @onchange = "GetSubCasteList();", @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchReligion, "Religion", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchReligion, new SelectList(Model.listMatchReligion, "Key", "Value", 0), "Select Religion...", new { @onchange = "GetCasteList();" })
+            <div class="form-group widthForm" id="trSubcaste">
+                @Html.LabelFor(m => m.MatchSubCaste, "SubCaste", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchSubCaste, new SelectList(ViewBag.MatchSubCasteList, "Value", "Text"), "Select SubCaste...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchCaste, "Caste", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchCaste, new SelectList(ViewBag.MatchCasteList, "Value", "Text"), "Select Caste...", new { @onchange = "GetSubCasteList();" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.RashiId, "Rashi Name", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.RashiId, new SelectList(Model.listMatchRashi, "Key", "Value", 0), "Select Rashi...", new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(m => m.MatchManglikState, "Manglik", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchManglikState, new SelectList(Model.listMatchManglikStatus, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+                </div>
+               
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchSubCaste, "SubCaste", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchSubCaste, new SelectList(ViewBag.MatchSubCasteList, "Value", "Text"), "Select SubCaste...", new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.MatchMarritalStatus, "Marrital Status", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchMarritalStatus, new SelectList(Model.listMarritalStatus, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(m => m.MatchLanguage, "Language", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchLanguage, new SelectList(Model.listMatchLanguage, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.GotraName, "Gotra Name", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextBoxFor(m => m.GotraName, new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.MatchEducationClass, "Education Class", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchEducationClass, new SelectList(Model.listMatchQualificationClass, "Key", "Value"), "Select Qualification...", new { @onchange = "GetEducationField();", @class = "form-control" })
+                </div>
+                @Html.LabelFor(m => m.MatchEducationField, "Education Field", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchEducationField, new SelectList(ViewBag.EducationField, "Value", "Text"), "Select Education Field...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.RashiId, "Rashi Name", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.RashiId, new SelectList(Model.listMatchRashi, "Key", "Value", 0), "Select Rashi...", new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.MatchJobField, "Job Field", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchJobField, new SelectList(Model.listMatchJobField, "Key", "Value", 1), "Select...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchLanguage, "Language", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchLanguage, new SelectList(Model.listMatchLanguage, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.MatchFoodHabbit, "Food Habbit", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchFoodHabbit, new SelectList(Model.listMatchFoodHabbits, "key", "Value", 1), "Select Food Habbits...", new { @onchange = "EnableEggetarian();", @class = "form-control" })
+                </div>
+
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchManglikState, "Manglik", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchManglikState, new SelectList(Model.listMatchManglikStatus, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+            <div class="form-group widthForm" id="trEggetarian">
+                @Html.LabelFor(m => m.MatchIsEggetarian, "Eggetarian", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchIsEggetarian, new SelectList(Model.listMatchHabbitsType, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchEducationClass, "Education Class", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchEducationClass, new SelectList(Model.listMatchQualificationClass, "Key", "Value"), "Select Qualification...", new { @onchange = "GetEducationField();" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.MatchIsSmoke, "Smoker", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchIsSmoke, new SelectList(Model.listMatchHabbitsType, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(m => m.MatchIsDrink, "Drinker", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchIsDrink, new SelectList(Model.listMatchHabbitsType, "Key", "Value", 0), "Select...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchEducationField, "Education Field", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchEducationField, new SelectList(ViewBag.EducationField, "Value", "Text"), "Select Education Field...", new { @class = "form-control" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.MatchSkinComplexion, "Skin Complexion", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchSkinComplexion, new SelectList(Model.listMatchBodyColour, "Key", "Value"), "Select...", new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(m => m.MatchBodyType, "Body Type", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchBodyType, new SelectList(Model.listMatchBodyType, "Key", "Value"), "Select...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchJobField, "Job Field", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchJobField, new SelectList(Model.listMatchJobField, "Key", "Value", 1), "Select...", new { @class = "form-control" })
+            <div class="form-group widthForm">
+
+                @Html.LabelFor(m => m.MatchPD, "Physically Challenged", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MatchPD, new SelectList(Model.listYesNo, "Key", "Value"), "Select...", new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchFoodHabbit, "Food Habbit", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchFoodHabbit, new SelectList(Model.listMatchFoodHabbits, "key", "Value", 1), "Select Food Habbits...", new { @onchange = "EnableEggetarian();" })
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.MatchAboutPartner, "About Your Partner", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.TextAreaFor(m => m.MatchAboutPartner, new { @class = "form-control" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchIsEggetarian, "Eggetarian", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchIsEggetarian, new SelectList(Model.listMatchHabbitsType, "Key", "Value", 0), "Select...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchIsSmoke, "Smoker", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchIsSmoke, new SelectList(Model.listMatchHabbitsType, "Key", "Value", 0), "Select...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchIsDrink, "Drinker", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchIsDrink, new SelectList(Model.listMatchHabbitsType, "Key", "Value", 0), "Select...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchSkinComplexion, "Skin Complexion", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchSkinComplexion, new SelectList(Model.listMatchBodyColour, "Key", "Value"), "Select...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchBodyType, "Body Type", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchBodyType, new SelectList(Model.listMatchBodyType, "Key", "Value"), "Select...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchPD, "Physically Challenged", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.MatchPD, new SelectList(Model.listYesNo, "Key", "Value"), "Select...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.MatchAboutPartner, "About Your Partner", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextAreaFor(m => m.MatchAboutPartner, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-6">
-                <input type="submit" id="MatchPreferance" name="MatchPreferance" value="Save and Next" class="btn btn-default" />
-                <input type="submit" id="Skip" name="Skip" value="Skip For Later" class="btn btn-default" />
+            <div class="form-group widthForm">
+                <div class="col-sm-offset-2 col-sm-4 btn-group">
+                    <input type="submit" id="MatchPreferance" name="MatchPreferance" value="Save and Next" class="btn btn-primary" />
+                    <input type="submit" id="Skip" name="Skip" value="Skip For Later" class="btn btn-primary" />
+                </div>
             </div>
         </div>
 
     }
 }
-
-
 
