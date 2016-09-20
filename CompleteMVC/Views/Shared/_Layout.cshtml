@@ -1,4 +1,4 @@
-﻿@using CompleteMVC.ViewModel
+@using CompleteMVC.ViewModel
 @model  BaseViewModel
 
 <!DOCTYPE html>
@@ -16,7 +16,7 @@
     @*<div style="background-image:url(../Images/bg.jpg);opacity:0.9">*@
 
     <nav class="navbar navbar-inverse">
-        <div class=".container-fluid">
+        <div class="container-fluid">
             @* Adding Navbar of Bootstrap*@
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">WebSiteName</a>
@@ -38,15 +38,15 @@
             @if (Session["User"] == null)
             {
                 <ul class="nav navbar-nav navbar-right">
-                    <li><span class="glyphicon glyphicon-user">@Html.ActionLink("Sign Up", "SignUp", "User")</span></li>
-                    <li><span class="glyphicon glyphicon-log-in">@Html.ActionLink("Log In", "LogIn", "User")</span></li>
+                    <li>@Html.ActionLink(" Sign-Up", "SignUp", "User", new { @class = "glyphicon glyphicon-user" })</li>
+                    <li>@Html.ActionLink(" Log-In", "LogIn", "User", new { @class= "glyphicon glyphicon-log-in" })</li>
                 </ul>
             }
             else
             {
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li>Hello @Session["User"].ToString()</li>
+                    <li><span style="color:white;padding-top:15px;padding-bottom:15px">Hello @Session["User"].ToString()</span></li>
                     <li>@Html.ActionLink("Log Out", "Logout", "User")</li>
                 </ul>
             }
@@ -88,14 +88,14 @@
     <div style="height:600px">
         @RenderSection("ContentBody")
     </div>
-    <div style="height:100px">
+    @*<div style="height:100px">
         <table style="width:100%">
             <tr>
                 <td>Policy</td>
                 <td>@DateTime.Now.Year</td>
             </tr>
         </table>
-    </div>
+    </div>*@
 
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
