@@ -2,7 +2,6 @@
 @using CompleteMVC.ViewModel
 @model UserPhysicalDetailsVM
 
-
 @section TitleSection{
     Body And Appearance
 }
@@ -11,58 +10,69 @@
         .error {
             color: darkred;
         }
+
+        .widthForm {
+            width: 70%;
+        }
     </style>
 }
 @section ContentBody{
     @using (Html.BeginForm("UserPhysicalDetails", "UserRegistration"))
     {
-        <div class="form-group">
-            @Html.LabelFor(m => m.UserHeightFit, "Height in Fit", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserHeightFit, Enumerable.Range(1, 8).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+        <div class="form-horizontal">
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserHeightFit, "Height", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-3">
+                    Fit:@Html.DropDownListFor(m => m.UserHeightFit, Enumerable.Range(1, 8).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-3">
+                    Inch:@Html.DropDownListFor(m => m.UserHeightInch, Enumerable.Range(0, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
             </div>
-            @Html.LabelFor(m => m.UserHeightInch, "Height in Fit", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserHeightInch, Enumerable.Range(0, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.UserBodyColourId, "Skin Complexion", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.DropDownListFor(m => m.UserBodyColourId, new SelectList(Model.listBodyColourId, "Key", "Value"), "Select...", new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.UserDOBDD, "Date Of Birth", new { @class = "form-control" })
-            <div class="col-sm-6">
-                DD:@Html.DropDownListFor(m => m.UserDOBDD, Enumerable.Range(1, 31).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
-                MM:@Html.DropDownListFor(m => m.UserDOBMM, Enumerable.Range(1, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
-                YYYY:@Html.DropDownListFor(m => m.UserDOBYYYY, Enumerable.Range(DateTime.Now.Year - 60, 61).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.UserDOBTime, "Time Of Birth", new { @class = "form-control" })
-            <div class="col-sm-6">
-                HH:@Html.DropDownListFor(m => m.UserDOBTimeHH, Enumerable.Range(1, 24).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
-                MM:@Html.DropDownListFor(m => m.UserDOBTimeMM, Enumerable.Range(0, 59).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
-                SS:@Html.DropDownListFor(m => m.UserDOBTimeSS, Enumerable.Range(0, 59).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.WeightMeasure, "Weight", new { @class = "form-control" })
-            <div class="col-sm-6">
-                @Html.TextBoxFor(m => m.WeightMeasure)
-            </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-6">
-                <input type="submit" id="PhysicalDetails" name="PhysicalDetails" value="Save and Next" class="btn btn-default" />
-                <input type="submit" id="Skip" name="Skip" value="Skip For Later" class="btn btn-default" />
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserDOBDD, "Date Of Birth", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-2">
+                    DD:@Html.DropDownListFor(m => m.UserDOBDD, Enumerable.Range(1, 31).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    MM:@Html.DropDownListFor(m => m.UserDOBMM, Enumerable.Range(1, 12).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    YYYY:@Html.DropDownListFor(m => m.UserDOBYYYY, Enumerable.Range(DateTime.Now.Year - 60, 61).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserDOBTime, "Time Of Birth", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-2">
+                    HH:@Html.DropDownListFor(m => m.UserDOBTimeHH, Enumerable.Range(1, 24).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    MM:@Html.DropDownListFor(m => m.UserDOBTimeMM, Enumerable.Range(0, 59).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2">
+                    SS:@Html.DropDownListFor(m => m.UserDOBTimeSS, Enumerable.Range(0, 59).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.UserBodyColourId, "Skin Complexion", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(m => m.UserBodyColourId, new SelectList(Model.listBodyColourId, "Key", "Value"), "Select...", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group widthForm">
+                @Html.LabelFor(m => m.WeightMeasure, "Weight", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(m => m.WeightMeasure, new { @class="form-control"})
+                </div>
+            </div>
+            <div class="form-group widthForm">
+                <div class="col-sm-offset-2 col-sm-4 btn-group">
+                    <input type="submit" id="PhysicalDetails" name="PhysicalDetails" value="Save and Next" class="btn btn-primary" />
+                    <input type="submit" id="Skip" name="Skip" value="Skip For Later" class="btn btn-primary" />
+                </div>
             </div>
         </div>
     }
 }
-
-
 
