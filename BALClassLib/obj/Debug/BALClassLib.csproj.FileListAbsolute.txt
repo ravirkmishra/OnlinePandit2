@@ -1,0 +1,11 @@
+E:\MyProjects\OnlinePandit2\BALClassLib\bin\Debug\BALClassLib.dll
+E:\MyProjects\OnlinePandit2\BALClassLib\bin\Debug\BALClassLib.pdb
+E:\MyProjects\OnlinePandit2\BALClassLib\bin\Debug\DALClassLib.dll
+E:\MyProjects\OnlinePandit2\BALClassLib\bin\Debug\ModelsClassLib.dll
+E:\MyProjects\OnlinePandit2\BALClassLib\bin\Debug\EntityFramework.dll
+E:\MyProjects\OnlinePandit2\BALClassLib\bin\Debug\DALClassLib.pdb
+E:\MyProjects\OnlinePandit2\BALClassLib\bin\Debug\ModelsClassLib.pdb
+E:\MyProjects\OnlinePandit2\BALClassLib\bin\Debug\EntityFramework.xml
+E:\MyProjects\OnlinePandit2\BALClassLib\obj\Debug\BALClassLib.csprojResolveAssemblyReference.cache
+E:\MyProjects\OnlinePandit2\BALClassLib\obj\Debug\BALClassLib.dll
+E:\MyProjects\OnlinePandit2\BALClassLib\obj\Debug\BALClassLib.pdb

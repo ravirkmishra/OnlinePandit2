@@ -1,8 +1,9 @@
-﻿using System;
+﻿using CompleteMVC.ModelClassLib.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using CompleteMVC.Models;
+
 
 namespace CompleteMVC.ViewModel
 {

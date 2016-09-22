@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using CompleteMVC.Models;
-using CompleteMVC.DAL;
 using CompleteMVC.ViewModel;
-using CompleteMVC.BAL;
 using CompleteMVC.Filters;
 using System.Web.Security;
+using CompleteMVC.BALClassLib.BAL;
+using ModelsClassLib.Models;
 
 namespace CompleteMVC.Controllers
 {

@@ -146,62 +146,19 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="BAL\GetMasterDataBAL.cs" />
-    <Compile Include="BAL\GetUserDetailsBAL.cs" />
-    <Compile Include="BAL\UserRegistrationBAL.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserRegistrationController.cs" />
-    <Compile Include="DAL\AddUserDAL.cs" />
-    <Compile Include="DAL\GetMasterDataDAL.cs" />
-    <Compile Include="DAL\GetUserDetailsDAL.cs" />
-    <Compile Include="DBContext\UserContext.cs" />
     <Compile Include="Filters\HeaderFooterFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\BodyColour.cs" />
-    <Compile Include="Models\BodyType.cs" />
-    <Compile Include="Models\Caste.cs" />
-    <Compile Include="Models\Country.cs" />
-    <Compile Include="Models\District.cs" />
-    <Compile Include="Models\DressingStyles.cs" />
-    <Compile Include="Models\EducationFields.cs" />
-    <Compile Include="Models\FoodHabbits.cs" />
-    <Compile Include="Models\Gender.cs" />
-    <Compile Include="Models\Gotra.cs" />
-    <Compile Include="Models\Habbits.cs" />
-    <Compile Include="Models\HabbitsType.cs" />
-    <Compile Include="Models\Hobbies.cs" />
-    <Compile Include="Models\IncomeRange.cs" />
-    <Compile Include="Models\JobFields.cs" />
-    <Compile Include="Models\Language.cs" />
-    <Compile Include="Models\ManglikState.cs" />
-    <Compile Include="Models\MarritalStatus.cs" />
-    <Compile Include="Models\MatchPreferance.cs" />
-    <Compile Include="Models\MaxEducationClassNames.cs" />
-    <Compile Include="Models\Native.cs" />
-    <Compile Include="Models\PanditBookingModel.cs" />
-    <Compile Include="Models\PanditModel.cs" />
-    <Compile Include="Models\Pets.cs" />
-    <Compile Include="Models\ProfileManagers.cs" />
-    <Compile Include="Models\PujaModel.cs" />
-    <Compile Include="Models\Rashi.cs" />
-    <Compile Include="Models\Religion.cs" />
-    <Compile Include="Models\State.cs" />
-    <Compile Include="Models\Subcaste.cs" />
-    <Compile Include="Models\UserEducationCareer.cs" />
-    <Compile Include="Models\Users.cs" />
-    <Compile Include="Models\UserSocialDetails.cs" />
-    <Compile Include="Models\Users_Image.cs" />
-    <Compile Include="Models\User_PhysiqueDetails.cs" />
-    <Compile Include="Models\YesNoValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\FooterVM.cs" />
     <Compile Include="ViewModel\HobbiesAndInterestsVM.cs" />
     <Compile Include="ViewModel\LogInVM.cs" />
     <Compile Include="ViewModel\MatchPreferanceVM.cs" />
-    <Compile Include="ViewModel\UserDetails.cs" />
+    <Compile Include="ViewModel\UserDetailsVM.cs" />
     <Compile Include="ViewModel\UserDisplay.cs" />
     <Compile Include="ViewModel\UserEducationDetailsVM.cs" />
     <Compile Include="ViewModel\UserPhysicalDetailsVM.cs" />
@@ -240,6 +197,16 @@
     <Folder Include="Style\" />
     <Folder Include="Views\Authentication\" />
     <Folder Include="Views\UserRegistration\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BALClassLib\BALClassLib.csproj">
+      <Project>{BA8530A2-2FFB-4D85-A881-5064143CB85A}</Project>
+      <Name>BALClassLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ModelsClassLib\ModelsClassLib.csproj">
+      <Project>{2F37B7D2-30AE-4AA8-95D1-B2AB7C02AE83}</Project>
+      <Name>ModelsClassLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

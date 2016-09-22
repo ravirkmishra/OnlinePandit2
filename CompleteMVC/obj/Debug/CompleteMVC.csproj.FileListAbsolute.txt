@@ -103,10 +103,12 @@ E:\MyProjects\OnlinePandit2\CompleteMVC\bin\roslyn\VBCSCompiler.exe.config
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\CompleteMVC.dll.config
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\CompleteMVC.dll
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\CompleteMVC.pdb
+E:\MyProjects\OnlinePandit2\CompleteMVC\bin\BALClassLib.dll
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\EntityFramework.dll
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\EntityFramework.SqlServer.dll
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\Microsoft.Web.Infrastructure.dll
+E:\MyProjects\OnlinePandit2\CompleteMVC\bin\ModelsClassLib.dll
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\Newtonsoft.Json.dll
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\System.Net.Http.Formatting.dll
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\System.Web.Helpers.dll
@@ -117,6 +119,9 @@ E:\MyProjects\OnlinePandit2\CompleteMVC\bin\System.Web.Razor.dll
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\System.Web.Webpages.Deployment.dll
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\System.Web.Webpages.dll
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\System.Web.Webpages.Razor.dll
+E:\MyProjects\OnlinePandit2\CompleteMVC\bin\DALClassLib.dll
+E:\MyProjects\OnlinePandit2\CompleteMVC\bin\BALClassLib.pdb
+E:\MyProjects\OnlinePandit2\CompleteMVC\bin\ModelsClassLib.pdb
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\EntityFramework.xml
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\EntityFramework.SqlServer.xml
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
@@ -130,6 +135,7 @@ E:\MyProjects\OnlinePandit2\CompleteMVC\bin\Newtonsoft.Json.xml
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\System.Net.Http.Formatting.xml
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\System.Web.Http.xml
 E:\MyProjects\OnlinePandit2\CompleteMVC\bin\System.Web.Http.WebHost.xml
+E:\MyProjects\OnlinePandit2\CompleteMVC\bin\DALClassLib.pdb
+E:\MyProjects\OnlinePandit2\CompleteMVC\obj\Debug\CompleteMVC.csprojResolveAssemblyReference.cache
 E:\MyProjects\OnlinePandit2\CompleteMVC\obj\Debug\CompleteMVC.dll
 E:\MyProjects\OnlinePandit2\CompleteMVC\obj\Debug\CompleteMVC.pdb
-E:\MyProjects\OnlinePandit2\CompleteMVC\obj\Debug\CompleteMVC.csprojResolveAssemblyReference.cache

@@ -1,0 +1,10 @@
+E:\MyProjects\OnlinePandit2\ModelsClassLib\bin\Debug\ModelsClassLib.dll.config
+E:\MyProjects\OnlinePandit2\ModelsClassLib\bin\Debug\ModelsClassLib.dll
+E:\MyProjects\OnlinePandit2\ModelsClassLib\bin\Debug\ModelsClassLib.pdb
+E:\MyProjects\OnlinePandit2\ModelsClassLib\bin\Debug\EntityFramework.dll
+E:\MyProjects\OnlinePandit2\ModelsClassLib\bin\Debug\EntityFramework.SqlServer.dll
+E:\MyProjects\OnlinePandit2\ModelsClassLib\bin\Debug\EntityFramework.xml
+E:\MyProjects\OnlinePandit2\ModelsClassLib\bin\Debug\EntityFramework.SqlServer.xml
+E:\MyProjects\OnlinePandit2\ModelsClassLib\obj\Debug\ModelsClassLib.csprojResolveAssemblyReference.cache
+E:\MyProjects\OnlinePandit2\ModelsClassLib\obj\Debug\ModelsClassLib.dll
+E:\MyProjects\OnlinePandit2\ModelsClassLib\obj\Debug\ModelsClassLib.pdb

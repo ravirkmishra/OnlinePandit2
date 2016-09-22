@@ -208,11 +208,11 @@
         function GetSubCasteList() {
            
             var Id = $('#MatchCaste').val();
-            if (Id="") {
-                $('#trSubcaste').hide();
+            if (Id=="") {
+                $("#trSubcaste").hide();
             }
             else {
-                $('#trSubcaste').show();
+                $("#trSubcaste").show();
             }
             $.ajax({
                 url: '/UserRegistration/GetSubCastesList',

@@ -1,7 +1,6 @@
-using CompleteMVC.BAL;
-using CompleteMVC.DAL;
+using CompleteMVC.BALClassLib.BAL;
 using CompleteMVC.Filters;
-using CompleteMVC.Models;
+using CompleteMVC.ModelClassLib.Models;
 using CompleteMVC.ViewModel;
 using System;
 using System.Collections.Generic;
