@@ -1,7 +1,6 @@
 
 @using CompleteMVC.ViewModel
 @model UserEducationDetailsVM
-
 @section TitleSection{
     Eduation and Carrer Section
 }
@@ -53,16 +52,23 @@
             var Id = $('#UserMaxQualificationClass').val();
             if (Id == "") {
                 $("#trEducationField").hide();
+                $("#trAddEdu").hide();
+                $("#trListEdu").hide();
+                $("#trSchool").hide();
+                $("#trEditDeleteEdu").hide();
             }
             else {
                 $("#trEducationField").show();
+                $("#trAddEdu").show();
+                $("#trListEdu").show();
+                $("#trSchool").show();
+                $("#trEditDeleteEdu").hide();
             }
         });
 
-        function EnableEmployment()
-        {
+        function EnableEmployment() {
             var UserJobStatusVal = $('#UserJobStatus').val();
-            
+
             if (UserJobStatusVal == 1) {
                 $('#trJobcomapny').show();
                 $('#trJobField').show();
@@ -152,11 +158,18 @@
             var Id = $('#UserMaxQualificationClass').val();
             if (Id == "") {
                 $("#trEducationField").hide();
+                $("#trAddEdu").hide();
+                $("#trListEdu").hide();
+                $("#trSchool").hide();
+                $("#trEditDeleteEdu").hide();
                 var markup = "<option value=''>Select Education Field...</option>";
                 $("#UserEducationField").html(markup).show();
             }
             else {
                 $("#trEducationField").show();
+                $("#trAddEdu").show();
+                $("#trListEdu").show();
+                $("#trSchool").show();
             }
             $.ajax({
                 url: '/UserRegistration/GetEducationFields',
@@ -175,12 +188,64 @@
                 }
             });
         }
+
+        function AddEducation() {
+            debugger;
+            $("#trEditDeleteEdu").hide();
+            var QualificationClassText = $("#UserMaxQualificationClass :selected").text();
+            var QualificationClassVal = $("#UserMaxQualificationClass").val();
+            var EducationFieldText = $("#UserEducationField :selected").text();
+            var EducationFieldVal = $("#UserEducationField").val();
+            var SchoolNameVal = $("UserEducationSchool").val();
+            var textToBind = QualificationClassText + "-" + EducationFieldText;
+            $("#EducationDetails").append('<option value="' + QualificationClassVal + '">' + textToBind + '</option>');
+        }
+
+        $('#EducationDetails').click(function () {
+            debugger;
+            $("#trEditDeleteEdu").show();
+            var listboxselected = $("#EducationDetails option:selected").val();
+            alert(listboxselected);
+        });
+
+        function ShowEditDelete()
+        {
+            var listBox = document.getElementById("EducationDetails");
+            if (listBox.options.length == 0) {
+                $("#trEditDeleteEdu").hide();
+            }
+            else {
+                $("#trEditDeleteEdu").show();
+                //RemoveItemFromListBox();
+            }
+        }
+
+        function RenoveButtonClick()
+        {
+            RemoveItemFromListBox();
+            $("#trEditDeleteEdu").hide();
+        }
+
+        function RemoveItemFromListBox()
+        {
+            if (true) {
+
+            }
+            var listboxselected = $("#EducationDetails option:selected").val();
+            var listBox = document.getElementById("EducationDetails");
+            for (var i = listBox.options.length - 1; i >= 0; i--) {
+                if (listBox.options[i].selected) {
+                    listBox.removeChild(listBox.options[i]);
+                }
+            }
+            alert(listboxselected);
+        }
     </script>
 }
 @section ContentBody{
     @using (Html.BeginForm("UserEducationDetails", "UserRegistration", FormMethod.Post))
     {
-        <div class = "form-horizontal">
+        <div class="form-horizontal">
             <div class="form-group widthForm">
                 @Html.LabelFor(m => m.UserMaxQualificationClass, "Maximum Qualification", new { @class = "control-label col-sm-2" })
                 <div class="col-sm-4">
@@ -199,6 +264,24 @@
                     @Html.TextBoxFor(m => m.UserEducationSchool, new { @class = "form-control" })
                 </div>
             </div>
+            <div class="form-group" id="trAddEdu">
+                <div class="col-sm-offset-2 col-sm-4 btn-group">
+                    <input type="button" id="AddEdu" name="AddEdu" value="Add Education" class="btn btn-primary" onclick="AddEducation();"/>
+                </div>
+            </div>
+            <div class="form-group widthForm" id="trListEdu">
+                @Html.Label("List Of Education Details", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @Html.ListBox("EducationDetails", new List<SelectListItem>(), new { @onclick="ShowEditDelete();"})
+                </div>
+            </div>
+            <div class="form-group" id="trEditDeleteEdu">
+                @Html.Label("Remove Education", new { @class = "control-label col-sm-2" })
+                <div class="col-sm-4">
+                    @*<input type="button" id="EditEdu" name="EditEdu" value="Edit" class="btn btn-primary" />*@
+                    <input type="button" id="RemoveEdu" name="RemoveEdu" value="Remove" class="btn btn-primary" onclick="RenoveButtonClick();"/>
+                </div>
+            </div>
             <div class="form-group widthForm">
                 @Html.LabelFor(m => m.UserJobStatus, "Employement Status", new { @class = "control-label col-sm-2" })
                 <div class="col-sm-4">
@@ -206,7 +289,7 @@
                        {
                             new SelectListItem() { Text="Employed",Value= "1"},
                             new SelectListItem() { Text = "Not Employed", Value="2"},
-                       }, "Select...", new { @class = "form-control",@onchange= "EnableEmployment();" })
+                       }, "Select...", new { @class = "form-control", @onchange = "EnableEmployment();" })
                 </div>
             </div>
             <div class="form-group widthForm" id="trJobcomapny">
@@ -264,6 +347,5 @@
                 </div>
             </div>
         </div>
-    }
-}
-
+        }
+        }
